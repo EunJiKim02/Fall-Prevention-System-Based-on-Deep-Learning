@@ -7,6 +7,10 @@
 딥러닝 기반의 낙상사고 방지 시스템
 
 
+
+![image](https://github.com/EunJiKim02/Fall-Prevention-System-Based-on-Deep-Learning/assets/87495422/5d592ed6-4a86-4bcc-9ab6-e4ee819f5e9d)
+
+
 ### Member
 
 
