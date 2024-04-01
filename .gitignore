@@ -3,6 +3,6 @@ hiddenlayer/
 *.caffemodel
 .idea/
 .ipynb_checkpoints/
-__pycache__
+**/__pycache__
 *.prototxt
 videos/
