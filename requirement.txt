@@ -1,0 +1,36 @@
+# Python: 3.10.13
+# OS : Ubuntu 20.04
+# GPU: ???
+# Cuda : 11.4
+
+# PyTorch 설치 - GPU 지원 버전
+torch==1.12.1+cu113
+torchvision==0.13.1+cu113
+torchaudio==0.12.1
+-f https://download.pytorch.org/whl/cu113
+
+# GitHub 저장소에서 직접 설치
+git+https://github.com/luca-medeiros/lang-segment-anything.git
+
+
+# 기본 데이터 분석과 처리를 위한 패키지
+pandas
+numpy
+
+# 시각화를 위한 패키지
+seaborn
+matplotlib
+
+# 이미지 처리를 위한 패키지
+opencv-python
+pillow
+
+# 머신러닝 모델 구축 및 평가
+scikit-learn
+pycaret[full]
+
+# 효율적인 파일 경로 처리
+natsort
+
+# 기타 유용한 라이브러리
+tqdm
