@@ -1,6 +1,5 @@
 import pandas as pd 
 from pycaret.classification import *
-from pycaret.anomaly import *
 import os
 import warnings
 warnings.filterwarnings("ignore")

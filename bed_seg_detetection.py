@@ -6,7 +6,6 @@ from lang_sam import LangSAM
 import os
 import pandas as pd
 warnings.filterwarnings("ignore")
-from pycaret.classification import *
 from tqdm import tqdm
 '''
 
