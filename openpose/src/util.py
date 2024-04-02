@@ -2,6 +2,7 @@ import numpy as np
 import math
 import cv2
 import matplotlib
+from datetime import datetime
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 import numpy as np
@@ -39,16 +40,36 @@ def transfer(model, model_weights):
     return transfered_model_weights
 
 def save_person(data):
-    pass
     # i : 관절번호
     # n : 사람 번호 (여러 명 있을 때)
     # x , y
-    # import csv
+    pass
+    import csv
+    keypoint = ['Nose', 'Neck', 'RShoulder', 'RElbow', 'RWrist', 'LShoulder', 'LElbow', 'LWrist', 'MidHip', 'RHip', 'RKnee', 'RAnkle', 'LHip', 'LAnkle', 'REye', 'LEye', 'REar', 'LEar']
 
-    # with open('openpose/position/data.csv', 'w', newline='') as csvfile:
-    #     writer = csv.writer(csvfile)
-    #     writer.writerow(['i', 'n', 'x', 'y'])  # 헤더 추가
-    #     writer.writerows(data)
+    grouped_data = {}
+    current_time = datetime.now().strftime("%y%m%d_%Hh%mM%S")
+
+
+    for entry in data:
+        n_value = entry[1]
+        if n_value not in grouped_data:
+            grouped_data[n_value] = []
+        grouped_data[n_value].append(entry[0])
+
+    for n_value, group_entries in grouped_data.items():
+        
+        filename = f'openpose/result/{current_time}_{n_value}.csv'
+        with open(filename, 'a+', newline='') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow(['keypoint', 'x', 'y'])  # 헤더 추가
+            pointer = 0
+            for i in range(18):
+                if i != group_entries[pointer][0]:
+                    writer.writerow((keypoint[i], -1, -1))
+                else:
+                    writer.writerow((keypoint[i], group_entries[pointer][1], group_entries[pointer][2])) # keypoint, x, y
+                    pointer += 1
 
 
 
@@ -69,8 +90,8 @@ def draw_bodypose(canvas, candidate, subset):
             if index == -1:
                 continue
             x, y = candidate[index][0:2]
-            # print(i, n, x, y)
-            save.append([i, n, x, y])
+            print(i, n, x, y)
+            save.append(((i, x, y), n))
             cv2.circle(canvas, (int(x), int(y)), 4, colors[i], thickness=-1)
     save_person(save)
     for i in range(17):
