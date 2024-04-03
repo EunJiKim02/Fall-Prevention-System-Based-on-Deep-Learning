@@ -56,20 +56,23 @@ def save_person(data):
         if n_value not in grouped_data:
             grouped_data[n_value] = []
         grouped_data[n_value].append(entry[0])
-
-    for n_value, group_entries in grouped_data.items():
-        
-        filename = f'openpose/result/{current_time}_{n_value}.csv'
-        with open(filename, 'a+', newline='') as csvfile:
-            writer = csv.writer(csvfile)
-            writer.writerow(['keypoint', 'x', 'y'])  # 헤더 추가
+    filename = f'openpose/result/{current_time}.csv'
+    with open(filename, 'a+', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(['Nose', 'Neck', 'RShoulder', 'RElbow', 'RWrist', 'LShoulder', 'LElbow', 'LWrist', 'MidHip', 'RHip', 'RKnee', 'RAnkle', 'LHip', 'LAnkle', 'REye', 'LEye', 'REar', 'LEar'])  # 헤더 추가
+        for n_value, group_entries in grouped_data.items():
             pointer = 0
+            temp = []
             for i in range(18):
                 if i != group_entries[pointer][0]:
-                    writer.writerow((keypoint[i], -1, -1))
+                    temp.append((-1, -1))
+                    #writer.writerow((keypoint[i], (-1, -1)))
                 else:
-                    writer.writerow((keypoint[i], group_entries[pointer][1], group_entries[pointer][2])) # keypoint, x, y
+                    temp.append((group_entries[pointer][1], group_entries[pointer][2]))
+                    #writer.writerow((keypoint[i], (group_entries[pointer][1], group_entries[pointer][2]))) # keypoint, x, y
                     pointer += 1
+
+            writer.writerow(temp)
 
 
 
