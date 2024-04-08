@@ -37,11 +37,11 @@ def save_image_with_boxes(image, boxes, logits, name, mode, save_path = None):
         ax.add_patch(rect)
 
         # Add confidence score as text
-        ax.text(x_min, y_min, f"wheels{i+1}", fontsize=8, color='red', verticalalignment='top')
+        ax.text(x_min, y_min, f"beds{i+1}", fontsize=8, color='red', verticalalignment='top')
         ax.text(x_max, y_max, f"{confidence_score}", fontsize=8, color='red',verticalalignment='bottom')
     
     if not save_path:
-        save_path = f'./data/img/lsam_output/{mode}/box/'
+        save_path = f'./data/lsam/{mode}/box/'
     os.makedirs(save_path, exist_ok=True)
     save_path = save_path + f'{name}_box.png'
     plt.savefig(save_path, bbox_inches='tight')
@@ -118,7 +118,7 @@ def main():
             overlay_mask_on_image(image_pil, masks, detect_mask_path)
             
             # Save the masks
-            mask_path = f"./data/lsam/{mode}/image_mask/{name}/"
+            mask_path = f"./data/lsam/{mode}/image_mask/"
             os.makedirs(mask_path, exist_ok=True)
             for i, mask_np in enumerate(masks_nps):
                 mask_save_path = mask_path+f'mask{i+1}.png'
