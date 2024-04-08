@@ -1,0 +1,24 @@
+name : fall
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10.13
+
+  - pip:
+    - matplotlib==3.7.2
+    - pandas==2.0.3
+    - pillow==9.3.0
+    - numpy==1.24.4
+    - segment-anything==1.0
+    - semantic-version==2.10.0
+    - torch==1.12.1
+    - torchmetrics==1.0.0
+    - torchvision==0.13.1
+    - torchaudio==0.12.1
+    - tqdm==4.65.0
+    - transformers==4.29.0
+    - seaborn
+    - scikit-learn
+    - pycaret[full]
+    - -e git+https://github.com/IDEA-Research/GroundingDINO.git@main#egg=GroundingDINO
