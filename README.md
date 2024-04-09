@@ -13,10 +13,19 @@
 
 ### environment setting
 
-``` 
-conda env create -f environment.yaml
-conda activate fall
-```
+- conda environment
+
+  ``` bash
+  conda env create -f environment.yaml
+  conda activate fall
+  ```
+
+- get pretrained openpose model
+  ``` bash
+  mkdir ./openpose/model
+  gdown https://drive.google.com/uc?id=1EULkcH_hhSU28qVc1jSJpCh2hGOrzpjK -O ./openpose/model/body_pose_model.pth
+  ```
+
 
 
 ### Member
