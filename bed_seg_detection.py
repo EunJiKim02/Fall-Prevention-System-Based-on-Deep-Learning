@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from PIL import Image
 from lang_sam import LangSAM
 import os
+import cv2
 import pandas as pd
 warnings.filterwarnings("ignore")
 from tqdm import tqdm
@@ -24,13 +25,36 @@ def save_image_with_boxes(image, boxes, logits, name, mode, save_path = None):
     fig, ax = plt.subplots()
     ax.imshow(image)
     # ax.set_title("Image with Bounding Boxes")
+    print("==============>",type(image))
     ax.axis('off')
+    img_x, img_y = image.size
+
 
     for i,(box, logit) in enumerate(zip(boxes, logits)):
         confidence_score = round(logit.item(), 2) 
         x_min, y_min, x_max, y_max = box
         box_width = x_max - x_min
         box_height = y_max - y_min
+
+        x_min_crop, y_min_crop, x_max_crop, y_max_crop = box
+        
+        # slice image
+        x_range = box_width * 0.1
+        y_range = box_height * 0.1
+        x_min_crop = int(max(0, x_min - x_range))
+        x_max_crop = int(min(x_max + x_range, img_x))
+        y_min_crop = int(max(0, y_min - y_range))
+        y_max_crop = int(min(y_max + y_range, img_y))
+        print(x_min_crop,y_min_crop,x_max_crop,y_max_crop)
+        crop_image = image.crop((x_min_crop,y_min_crop,x_max_crop,y_max_crop))
+
+        if not save_path:
+            save_path = f'./data/lsam/{mode}/crop/'
+        os.makedirs(save_path, exist_ok=True)
+        crop_image = crop_image.resize((512, 512))
+        crop_image.save(f"{save_path}{i}_{name}","JPEG")
+
+        
 
         # Draw bounding box
         rect = plt.Rectangle((x_min, y_min), box_width, box_height, fill=False, edgecolor='red', linewidth=2)
@@ -43,6 +67,7 @@ def save_image_with_boxes(image, boxes, logits, name, mode, save_path = None):
     if not save_path:
         save_path = f'./data/lsam/{mode}/box/'
     os.makedirs(save_path, exist_ok=True)
+
     save_path = save_path + f'{name}_box.png'
     plt.savefig(save_path, bbox_inches='tight')
     plt.show(block=True)
