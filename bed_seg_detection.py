@@ -48,11 +48,10 @@ def save_image_with_boxes(image, boxes, logits, name, mode, save_path = None):
         print(x_min_crop,y_min_crop,x_max_crop,y_max_crop)
         crop_image = image.crop((x_min_crop,y_min_crop,x_max_crop,y_max_crop))
 
-        if not save_path:
-            save_path = f'./data/lsam/{mode}/crop/'
-        os.makedirs(save_path, exist_ok=True)
+        path = f'./data/lsam/{mode}/crop/'
+        os.makedirs(path, exist_ok=True)
         crop_image = crop_image.resize((512, 512))
-        crop_image.save(f"{save_path}{i}_{name}","JPEG")
+        crop_image.save(f"{path}{i}_{name}","JPEG")
 
         
 
