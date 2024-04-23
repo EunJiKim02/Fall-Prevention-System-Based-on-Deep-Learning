@@ -48,10 +48,10 @@ def save_image_with_boxes(image, boxes, logits, name, mode, risk_or_normal, save
         print(x_min_crop,y_min_crop,x_max_crop,y_max_crop)
         crop_image = image.crop((x_min_crop,y_min_crop,x_max_crop,y_max_crop))
 
-        path = f'./data/{mode}/crop/{risk_or_normal}/'
-        os.makedirs(path, exist_ok=True)
+        save_path = f'./data/{mode}/crop/{risk_or_normal}/'
+        os.makedirs(save_path, exist_ok=True)
         crop_image = crop_image.resize((512, 512))
-        crop_image.save(f"{path}{i}_{name}","JPEG")
+        crop_image.save(f"{save_path}{i}_{name}","JPEG")
 
         # # Draw bounding box
         # rect = plt.Rectangle((x_min, y_min), box_width, box_height, fill=False, edgecolor='red', linewidth=2)
