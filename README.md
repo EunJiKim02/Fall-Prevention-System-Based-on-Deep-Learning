@@ -23,7 +23,7 @@
 - get pretrained openpose model
   ``` bash
   mkdir ./openpose/model
-  gdown https://drive.google.com/uc?id=1EULkcH_hhSU28qVc1jSJpCh2hGOrzpjK -O ./openpose/model/body_pose_model.pth
+  gdown https://drive.google.com/uc?id=1EULkcH_hhSU28qVc1jSJpCh2hGOrzpjK -O body_pose_model.pth
   ```
 
 
