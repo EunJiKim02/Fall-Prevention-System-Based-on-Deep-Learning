@@ -9,6 +9,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cv2
 
+import os
+import pandas as pd
+
 
 def padRightDownCorner(img, stride, padValue):
     h = img.shape[0]
@@ -238,3 +241,25 @@ def npmax(array):
     i = arrayvalue.argmax()
     j = arrayindex[i]
     return i, j
+  
+  
+def mergecsv(root_folder='./data/train/pose/', save_loc='./data/train/pose/', filename='dataset.csv'):
+    
+    folders = ['risk', 'normal']
+
+    all_data = []
+
+    for folder in folders:
+        folder_path = os.path.join(root_folder, folder)
+        label = 1 if folder == 'risk' else 0
+        for file in os.listdir(folder_path):
+            if file.endswith('.csv'):
+                file_path = os.path.join(folder_path, file)
+                df = pd.read_csv(file_path)
+                df['label'] = label
+                all_data.append(df)
+
+    combined_df = pd.concat(all_data, ignore_index=True)
+
+    # print(combined_df)
+    combined_df.to_csv(f'{save_loc}dataset.csv', index=False)
