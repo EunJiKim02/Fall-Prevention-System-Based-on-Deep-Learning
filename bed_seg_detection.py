@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from PIL import Image
 from lang_sam import LangSAM
 import os
+import cv2
 import pandas as pd
 warnings.filterwarnings("ignore")
 from tqdm import tqdm
@@ -20,11 +21,14 @@ https://github.com/IDEA-Research/GroundingDINO
 
 '''
 
-def save_image_with_boxes(image, boxes, logits,name,mode,save_path = None):
+def save_image_with_boxes(image, boxes, logits, name, mode, save_path = None):
     fig, ax = plt.subplots()
     ax.imshow(image)
     # ax.set_title("Image with Bounding Boxes")
+    print("==============>",type(image))
     ax.axis('off')
+    img_x, img_y = image.size
+
 
     for i,(box, logit) in enumerate(zip(boxes, logits)):
         confidence_score = round(logit.item(), 2) 
@@ -32,17 +36,37 @@ def save_image_with_boxes(image, boxes, logits,name,mode,save_path = None):
         box_width = x_max - x_min
         box_height = y_max - y_min
 
+        x_min_crop, y_min_crop, x_max_crop, y_max_crop = box
+        
+        # slice image
+        x_range = box_width * 0.1
+        y_range = box_height * 0.1
+        x_min_crop = int(max(0, x_min - x_range))
+        x_max_crop = int(min(x_max + x_range, img_x))
+        y_min_crop = int(max(0, y_min - y_range))
+        y_max_crop = int(min(y_max + y_range, img_y))
+        print(x_min_crop,y_min_crop,x_max_crop,y_max_crop)
+        crop_image = image.crop((x_min_crop,y_min_crop,x_max_crop,y_max_crop))
+
+        path = f'./data/lsam/{mode}/crop/'
+        os.makedirs(path, exist_ok=True)
+        crop_image = crop_image.resize((512, 512))
+        crop_image.save(f"{path}{i}_{name}","JPEG")
+
+        
+
         # Draw bounding box
         rect = plt.Rectangle((x_min, y_min), box_width, box_height, fill=False, edgecolor='red', linewidth=2)
         ax.add_patch(rect)
 
         # Add confidence score as text
-        ax.text(x_min, y_min, f"wheels{i+1}", fontsize=8, color='red', verticalalignment='top')
+        ax.text(x_min, y_min, f"beds{i+1}", fontsize=8, color='red', verticalalignment='top')
         ax.text(x_max, y_max, f"{confidence_score}", fontsize=8, color='red',verticalalignment='bottom')
     
     if not save_path:
-        save_path = f'./data/img/lsam_output/{mode}/box/'
+        save_path = f'./data/lsam/{mode}/box/'
     os.makedirs(save_path, exist_ok=True)
+
     save_path = save_path + f'{name}_box.png'
     plt.savefig(save_path, bbox_inches='tight')
     plt.show(block=True)
@@ -111,14 +135,14 @@ def main():
             masks_nps = [mask.squeeze().cpu().numpy().astype('uint8') for mask in masks]
 
             # Display the image with bounding boxes and confidence scores
-            save_image_with_boxes(image_pil, boxes, logits,name)
+            save_image_with_boxes(image_pil, boxes, logits, name, mode)
             detect_mask_path = f'./data/lsam/{mode}/mask/'
             os.makedirs(detect_mask_path,exist_ok=True)
             detect_mask_path = detect_mask_path+f'mask{name}'
             overlay_mask_on_image(image_pil, masks, detect_mask_path)
             
             # Save the masks
-            mask_path = f"./data/lsam/{mode}/image_mask/{name}/"
+            mask_path = f"./data/lsam/{mode}/image_mask/"
             os.makedirs(mask_path, exist_ok=True)
             for i, mask_np in enumerate(masks_nps):
                 mask_save_path = mask_path+f'mask{i+1}.png'

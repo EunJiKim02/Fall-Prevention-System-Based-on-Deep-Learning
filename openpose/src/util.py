@@ -64,7 +64,7 @@ def save_person(data):
             pointer = 0
             temp = []
             for i in range(18):
-                if i != group_entries[pointer][0]:
+                if pointer >= len(group_entries) or (i != group_entries[pointer][0]):
                     temp.append((-1, -1))
                     #writer.writerow((keypoint[i], (-1, -1)))
                 else:
