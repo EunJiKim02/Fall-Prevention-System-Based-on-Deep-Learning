@@ -22,5 +22,5 @@ dependencies:
     - seaborn
     - scikit-learn
     - scikit_image==0.22.0
-    - pycaret[full]
+    - pycaret[full]==3.0.4
     - -e git+https://github.com/IDEA-Research/GroundingDINO.git@main#egg=GroundingDINO
