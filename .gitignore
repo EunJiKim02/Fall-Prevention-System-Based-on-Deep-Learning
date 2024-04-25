@@ -9,3 +9,4 @@ videos/
 *.csv
 test.py
 data/
+venv/
