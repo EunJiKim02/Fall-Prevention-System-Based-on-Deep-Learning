@@ -64,10 +64,10 @@ def fall_detect_predict(csv_file,gt_csvfile,model_path,save_path):
     save_confusion_matrix(gtlist, pred_list,save_confusion_matrix_path)
     
    # F1 Score 계산
-    f1_score = f1_score(gtlist, pred_list, average='macro')
-    f1_score*=100
+    f1score = f1_score(gtlist, pred_list, average='macro')
+    f1score*=100
     
-    print(f'F1 Score : {f1_score:.2f}')
+    print(f'F1 Score : {f1score:.2f}')
     
 
 def main():
