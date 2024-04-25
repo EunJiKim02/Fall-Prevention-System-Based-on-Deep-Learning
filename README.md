@@ -26,6 +26,23 @@
   gdown https://drive.google.com/uc?id=1EULkcH_hhSU28qVc1jSJpCh2hGOrzpjK -O ./openpose/model/body_pose_model.pth
   ```
 
+- segmentation
+
+  ``` bash
+  python bed_seg_detection.py
+  ```
+
+- pose estimation
+
+  ``` bash
+  python pose_estimation.py
+  ```
+
+- classification
+
+  ``` bash
+  python fall_detect_train.py
+  ```
 
 
 ### Member
