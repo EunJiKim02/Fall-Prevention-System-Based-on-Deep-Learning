@@ -13,7 +13,7 @@ import os
 
 def main():
     #crop data 불러오기
-    body_estimation = Body('openpose/model/body_pose_model.pth')
+    body_estimation = Body('./openpose/model/body_pose_model.pth')
 
     mode='train'
     root_path = f'./data/{mode}/crop/'
