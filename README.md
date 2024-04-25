@@ -10,6 +10,7 @@
 
 ![image](https://github.com/EunJiKim02/Fall-Prevention-System-Based-on-Deep-Learning/assets/87495422/5d592ed6-4a86-4bcc-9ab6-e4ee819f5e9d)
 
+
 ### dataset
 
 https://drive.google.com/drive/folders/1NCKVH2z7ljYXVJDb2eQDjhm2fmP9RDzY?usp=share_link
@@ -27,6 +28,7 @@ https://drive.google.com/drive/folders/1NCKVH2z7ljYXVJDb2eQDjhm2fmP9RDzY?usp=sha
 - get pretrained openpose model
   ``` bash
   mkdir ./openpose/model
+
   gdown https://drive.google.com/uc?id=1EULkcH_hhSU28qVc1jSJpCh2hGOrzpjK -O ./openpose/model/body_pose_model.pth
   ```
 
@@ -47,6 +49,7 @@ https://drive.google.com/drive/folders/1NCKVH2z7ljYXVJDb2eQDjhm2fmP9RDzY?usp=sha
   ``` bash
   python fall_detect_train.py
   ```
+
 
 
 ### Member
