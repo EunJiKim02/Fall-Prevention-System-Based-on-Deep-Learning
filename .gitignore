@@ -1,3 +1,4 @@
+
 hiddenlayer/
 *.pth
 *.caffemodel
@@ -6,5 +7,6 @@ hiddenlayer/
 **/__pycache__
 *.prototxt
 videos/
-*.csv
-test.py
+
+data/
+
