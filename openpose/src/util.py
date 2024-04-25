@@ -42,7 +42,7 @@ def transfer(model, model_weights):
         transfered_model_weights[weights_name] = model_weights['.'.join(weights_name.split('.')[1:])]
     return transfered_model_weights
 
-def save_person(data):
+def save_person(data,mode,risk_or_normal):
     # i : 관절번호
     # n : 사람 번호 (여러 명 있을 때)
     # x , y
@@ -59,7 +59,7 @@ def save_person(data):
         if n_value not in grouped_data:
             grouped_data[n_value] = []
         grouped_data[n_value].append(entry[0])
-    filename = f'openpose/result/{current_time}.csv'
+    filename = f'data/{mode}/pose/{risk_or_normal}/{current_time}.csv'
     with open(filename, 'a+', newline='') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(['Nose', 'Neck', 'RShoulder', 'RElbow', 'RWrist', 'LShoulder', 'LElbow', 'LWrist', 'MidHip', 'RHip', 'RKnee', 'RAnkle', 'LHip', 'LAnkle', 'REye', 'LEye', 'REar', 'LEar'])  # 헤더 추가
@@ -80,7 +80,7 @@ def save_person(data):
 
 
 # draw the body keypoint and lims
-def draw_bodypose(canvas, candidate, subset):
+def draw_bodypose(canvas, candidate, subset,mode,risk_or_normal):
     stickwidth = 4
     limbSeq = [[2, 3], [2, 6], [3, 4], [4, 5], [6, 7], [7, 8], [2, 9], [9, 10], \
                [10, 11], [2, 12], [12, 13], [13, 14], [2, 1], [1, 15], [15, 17], \
@@ -99,7 +99,7 @@ def draw_bodypose(canvas, candidate, subset):
             print(i, n, x, y)
             save.append(((i, x, y), n))
             cv2.circle(canvas, (int(x), int(y)), 4, colors[i], thickness=-1)
-    save_person(save)
+    save_person(save,mode,risk_or_normal)
     for i in range(17):
         for n in range(len(subset)):
             index = subset[n][np.array(limbSeq[i]) - 1]
@@ -241,8 +241,8 @@ def npmax(array):
     i = arrayvalue.argmax()
     j = arrayindex[i]
     return i, j
-
-
+  
+  
 def mergecsv(root_folder='./data/train/pose/', save_loc='./data/train/pose/', filename='dataset.csv'):
     
     folders = ['risk', 'normal']
@@ -263,4 +263,3 @@ def mergecsv(root_folder='./data/train/pose/', save_loc='./data/train/pose/', fi
 
     # print(combined_df)
     combined_df.to_csv(f'{save_loc}dataset.csv', index=False)
-

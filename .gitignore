@@ -1,4 +1,4 @@
-hiddenlayer/
+Shiddenlayer/
 *.pth
 *.caffemodel
 .idea/
@@ -8,3 +8,4 @@ hiddenlayer/
 videos/
 *.csv
 test.py
+data/
