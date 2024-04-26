@@ -159,7 +159,7 @@ def draw_bodypose(filename, canvas, candidate, subset,mode,risk_or_normal):
             polygon = cv2.ellipse2Poly((int(mY), int(mX)), (int(length / 2), stickwidth), int(angle), 0, 360, 1)
             cv2.fillConvexPoly(cur_canvas, polygon, colors[i])
             canvas = cv2.addWeighted(canvas, 0.4, cur_canvas, 0.6, 0)
-    plt.imsave(f"./data/train/{mode}/img/{risk_or_normal}/{filename}", canvas[:, :, [2, 1, 0]])
+    plt.imsave(f"./data/{mode}/pose/img/{risk_or_normal}/{filename}", canvas[:, :, [2, 1, 0]])
     # plt.imshow(canvas[:, :, [2, 1, 0]])
     print("complete")
     return canvas
