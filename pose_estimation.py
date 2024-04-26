@@ -15,7 +15,7 @@ def main():
     #crop data 불러오기
     body_estimation = Body('openpose/model/body_pose_model.pth')
 
-    mode='train'
+    mode='test'
     root_path = f'./data/{mode}/crop/'
     folder_list=os.listdir(root_path)
     for folder_name in folder_list:

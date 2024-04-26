@@ -75,7 +75,6 @@ def save_person_test(data, filename):
 def save_person_sepXY(img, data,mode,risk_or_normal, filename):
     h = img.shape[0]
     w = img.shape[1]
-    #print(h,w)
 
     # i : 관절번호
     # n : 사람 번호 (여러 명 있을 때)
@@ -99,7 +98,6 @@ def save_person_sepXY(img, data,mode,risk_or_normal, filename):
                          'LElbowX','LElbowY', 'LWristX','LWristY', 'MidHipX','MidHipY', 'RHipX','RHipY', 'RKneeX','RKneeY','AnkleX','AnkleY', 'LHipX','LHipY', 
                          'LAnkleX','LAnkleY', 'REyeX', 'REyeY','LEyeX', 'LEyeY','REarX','REarY', 'LEarX','LEarY'])  # 헤더 추가
         for n_value, group_entries in grouped_data.items():
-            print(n_value,group_entries)
             pointer = 0
             temp = []
             temp.append(name)
@@ -161,7 +159,7 @@ def draw_bodypose(filename, canvas, candidate, subset,mode,risk_or_normal):
             polygon = cv2.ellipse2Poly((int(mY), int(mX)), (int(length / 2), stickwidth), int(angle), 0, 360, 1)
             cv2.fillConvexPoly(cur_canvas, polygon, colors[i])
             canvas = cv2.addWeighted(canvas, 0.4, cur_canvas, 0.6, 0)
-    plt.imsave(f"./data/train/pose/img/{risk_or_normal}/{filename}", canvas[:, :, [2, 1, 0]])
+    plt.imsave(f"./data/train/{mode}/img/{risk_or_normal}/{filename}", canvas[:, :, [2, 1, 0]])
     # plt.imshow(canvas[:, :, [2, 1, 0]])
     print("complete")
     return canvas
@@ -292,6 +290,27 @@ import os
 import pandas as pd
   
 def mergecsv(root_folder='./data/train/pose/', save_loc='./data/train/pose/', filename='dataset.csv'):
+    
+    folders = ['risk', 'normal']
+
+    all_data = []
+
+    for folder in folders:
+        folder_path = os.path.join(root_folder, folder)
+        label = 1 if folder == 'risk' else 0
+        for file in os.listdir(folder_path):
+            if file.endswith('.csv'):
+                file_path = os.path.join(folder_path, file)
+                df = pd.read_csv(file_path, index_col = 0)
+                df['label'] = label
+                all_data.append(df)
+
+    combined_df = pd.concat(all_data)
+
+    #print(combined_df)
+    combined_df.to_csv(f'{save_loc}dataset.csv', index=True)
+
+def mergecsv(root_folder='./data/test/pose/', save_loc='./data/test/pose/', filename='dataset.csv'):
     
     folders = ['risk', 'normal']
 
