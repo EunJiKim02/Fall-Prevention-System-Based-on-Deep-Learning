@@ -296,7 +296,7 @@ def mergecsv(root_folder='./data/train/pose/', save_loc='./data/train/pose/', fi
                 file_path = os.path.join(folder_path, file)
                 df = pd.read_csv(file_path)
                 df['label'] = label
-                print(df)
+                #print(df)
                 all_data.append(df)
 
     combined_df = pd.concat(all_data)
