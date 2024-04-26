@@ -15,9 +15,9 @@ from openpose.src.body import Body
 import copy
 from sklearn.metrics import accuracy_score
 from pycaret.classification import *  # type: ignore
+from tqdm import tqdm
 
 warnings.filterwarnings("ignore")
-from tqdm import tqdm
 
 
 def crop_image(image, boxes):
@@ -81,8 +81,7 @@ def pose_estimation(cropped_img):
     return df
 
 
-def fall_detect(pred_df, model_path):
-    final_model = load_model(model_path)
+def fall_detect(pred_df, final_model):
     pred_list = predict_model(final_model, pred_df)["prediction_label"].to_list()
 
     return pred_list[0]
@@ -119,13 +118,14 @@ def main():
     model_name = ""
     model_name = model_name.split(".")[0]
     model_path = f"checkpoint/{model_name}"
+    model = load_model(model_path)
     gt_path = "data/gt.csv"
     preds = []
 
     for test_img in img_pathes:
         cropped_img = data_preprocessing(test_img)
         df = pose_estimation(cropped_img)
-        pred = fall_detect(df, model_path)
+        pred = fall_detect(df, model)
         preds.append(pred)
 
     evaluate(preds, gt_path, "result")
