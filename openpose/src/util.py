@@ -310,7 +310,7 @@ def mergecsv(root_folder='./data/train/pose/', save_loc='./data/train/pose/', fi
     #print(combined_df)
     combined_df.to_csv(f'{save_loc}dataset.csv', index=True)
 
-def mergecsv(root_folder='./data/test/pose/', save_loc='./data/test/pose/', filename='dataset.csv'):
+def mergecsv_2(root_folder='./data/test/pose/', save_loc='./data/test/pose/', filename='dataset.csv'):
     
     folders = ['risk', 'normal']
 
