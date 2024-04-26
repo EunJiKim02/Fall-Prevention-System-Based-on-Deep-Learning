@@ -3,10 +3,10 @@ import matplotlib.pyplot as plt
 import copy
 import numpy as np
 
-from src import model
-from src import util
-from src.body import Body
-from src.hand import Hand
+from openpose.src import model
+from openpose.src import util
+from openpose.src.body import Body
+from openpose.src.hand import Hand
 
 import os
 
