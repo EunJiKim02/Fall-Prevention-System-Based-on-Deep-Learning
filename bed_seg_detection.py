@@ -68,17 +68,21 @@ def main():
     folder_names = os.listdir(root_path)
 
     for folder_name in folder_names:
+        # print(folder_name)
+        if folder_name == 'risk':
+            continue
+        folder_name = os.path.join(root_path, folder_name)
         img_list=os.listdir(folder_name)
         risk_or_normal=folder_name
         
         for img_name in tqdm(img_list):
-            img_path=os.path.join(root_path, folder_name,img_name)
+            img_path=os.path.join(folder_name, img_name)
             # width, height = get_image_size(img_path)
             image_pil = Image.open(img_path).convert("RGB")
             masks, boxes, phrases, logits = model.predict(image_pil, text_prompt)
 
             if len(masks) == 0:
-                        print(f"No objects of the '{text_prompt}' prompt detected in the image.")
+                print(f"No objects of the '{text_prompt}' prompt detected in the image.")
             else:
 
                 # Display the image with bounding boxes and confidence scores
