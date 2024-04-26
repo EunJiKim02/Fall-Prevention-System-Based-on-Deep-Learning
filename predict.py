@@ -122,8 +122,8 @@ def main():
     gt_path = "data/gt.csv"
     preds = []
 
-    for d in img_pathes:
-        cropped_img = data_preprocessing(d)
+    for test_img in img_pathes:
+        cropped_img = data_preprocessing(test_img)
         df = pose_estimation(cropped_img)
         pred = fall_detect(df, model_path)
         preds.append(pred)
