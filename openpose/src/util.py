@@ -74,7 +74,10 @@ def save_person(data,mode,risk_or_normal, filename):
 
             writer.writerow(temp)
 
-def save_person_sepXY(data,mode,risk_or_normal, filename):
+def save_person_sepXY(img, data,mode,risk_or_normal, filename):
+    h = img.shape[0]
+    w = img.shape[1]
+    print(h,w)
     # i : 관절번호
     # n : 사람 번호 (여러 명 있을 때)
     # x , y
@@ -99,6 +102,7 @@ def save_person_sepXY(data,mode,risk_or_normal, filename):
                          'LElbowX','LElbowY', 'LWristX','LWristY', 'MidHipX','MidHipY', 'RHipX','RHipY', 'RKneeX','RKneeY','AnkleX','AnkleY', 'LHipX','LHipY', 
                          'LAnkleX','LAnkleY', 'REyeX', 'REyeY','LEyeX', 'LEyeY','REarX','REarY', 'LEarX','LEarY'])  # 헤더 추가
         for n_value, group_entries in grouped_data.items():
+            print(n_value,group_entries)
             pointer = 0
             temp = []
             temp.append(name)
@@ -108,8 +112,10 @@ def save_person_sepXY(data,mode,risk_or_normal, filename):
                     temp.append(-1)
                     #writer.writerow((keypoint[i], (-1, -1)))
                 else:
-                    temp.append(group_entries[pointer][1])
-                    temp.append(group_entries[pointer][2])
+                    X = np.floor((group_entries[pointer][1] / h) * 10000) / 10000
+                    Y = np.floor((group_entries[pointer][2] / w) * 10000) / 10000
+                    temp.append(X)
+                    temp.append(Y)
                     #writer.writerow((keypoint[i], (group_entries[pointer][1], group_entries[pointer][2]))) # keypoint, x, y
                     pointer += 1
 
@@ -137,7 +143,7 @@ def draw_bodypose(filename,canvas, candidate, subset,mode,risk_or_normal):
             #print(i, n, x, y)
             save.append(((i, x, y), n))
             cv2.circle(canvas, (int(x), int(y)), 4, colors[i], thickness=-1)
-    save_person_sepXY(save,mode,risk_or_normal, filename)
+    save_person_sepXY(canvas, save,mode,risk_or_normal, filename)
     for i in range(17):
         for n in range(len(subset)):
             index = subset[n][np.array(limbSeq[i]) - 1]
@@ -295,9 +301,8 @@ def mergecsv(root_folder='./data/train/pose/', save_loc='./data/train/pose/', fi
         for file in os.listdir(folder_path):
             if file.endswith('.csv'):
                 file_path = os.path.join(folder_path, file)
-                df = pd.read_csv(file_path)
+                df = pd.read_csv(file_path, index_col = 0)
                 df['label'] = label
-                #print(df)
                 all_data.append(df)
 
     combined_df = pd.concat(all_data)
