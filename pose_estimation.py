@@ -6,7 +6,7 @@ import numpy as np
 from openpose.src import model
 from openpose.src import util
 from openpose.src.body import Body
-from openpose.src.hand import Hand
+# from openpose.src.hand import Hand
 
 import os
 
