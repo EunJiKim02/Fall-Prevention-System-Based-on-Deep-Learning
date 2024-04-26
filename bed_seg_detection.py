@@ -29,7 +29,7 @@ def save_crop_image(image, boxes, logits, name, mode, risk_or_normal, save_path 
     ax.axis('off')
     img_x, img_y = image.size
 
-
+    save_path = f'./data/{mode}/crop/{risk_or_normal}/'
     for i,(box, logit) in enumerate(zip(boxes, logits)):
         confidence_score = round(logit.item(), 2) 
         x_min, y_min, x_max, y_max = box
@@ -47,10 +47,7 @@ def save_crop_image(image, boxes, logits, name, mode, risk_or_normal, save_path 
         y_max_crop = int(min(y_max + y_range, img_y))
         print(x_min_crop,y_min_crop,x_max_crop,y_max_crop)
         crop_image = image.crop((x_min_crop,y_min_crop,x_max_crop,y_max_crop))
-
-        save_path = f'./data/{mode}/crop/{risk_or_normal}/'
-        os.makedirs(save_path, exist_ok=True)
-        crop_image = crop_image.resize((512, 512))
+        #crop_image = crop_image.resize((512, 512))
         crop_image.save(f"{save_path}{i}_{name}","JPEG")
 
 
@@ -62,21 +59,24 @@ def get_image_size(image_path):
 def main():
     model = LangSAM("vit_h")
     text_prompt = "bed"
-    mode='train'
+    mode='test'
     root_path = f'./data/{mode}/origin/'
     #normal, risk folder 이름 저장
     folder_names = os.listdir(root_path)
+    folder_names.remove('.DS_Store')
+    print(folder_names)
 
     for folder_name in folder_names:
-        # print(folder_name)
-        if folder_name == 'risk':
-            continue
-        folder_name = os.path.join(root_path, folder_name)
-        img_list=os.listdir(folder_name)
+        print(folder_name)
+        # if folder_name == 'risk':
+        #     continue
+        folder_path = os.path.join(root_path, folder_name)
+        print(folder_name)
+        img_list=os.listdir(folder_path)
         risk_or_normal=folder_name
         
         for img_name in tqdm(img_list):
-            img_path=os.path.join(folder_name, img_name)
+            img_path=os.path.join(folder_path, img_name)
             # width, height = get_image_size(img_path)
             image_pil = Image.open(img_path).convert("RGB")
             masks, boxes, phrases, logits = model.predict(image_pil, text_prompt)
