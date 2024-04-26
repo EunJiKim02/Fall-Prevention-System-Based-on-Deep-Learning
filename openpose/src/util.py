@@ -8,6 +8,7 @@ from matplotlib.figure import Figure
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
+import csv
 
 
 def padRightDownCorner(img, stride, padValue):
@@ -39,55 +40,51 @@ def transfer(model, model_weights):
         transfered_model_weights[weights_name] = model_weights['.'.join(weights_name.split('.')[1:])]
     return transfered_model_weights
 
-def save_person(data,mode,risk_or_normal, filename):
-    # i : 관절번호
-    # n : 사람 번호 (여러 명 있을 때)
-    # x , y
-    pass
-    import csv
-    keypoint = ['Nose', 'Neck', 'RShoulder', 'RElbow', 'RWrist', 'LShoulder', 'LElbow', 'LWrist', 'MidHip', 'RHip', 'RKnee', 'RAnkle', 'LHip', 'LAnkle', 'REye', 'LEye', 'REar', 'LEar']
+def save_person_test(data, filename):
 
     grouped_data = {}
-    current_time = datetime.now().strftime("%y%m%d_%Hh%mM%S")
-
 
     for entry in data:
         n_value = entry[1]
         if n_value not in grouped_data:
             grouped_data[n_value] = []
         grouped_data[n_value].append(entry[0])
-    filename = f'data/{mode}/pose/{risk_or_normal}/{filename}.csv'
-    with open(filename, 'a+', newline='') as csvfile:
-        writer = csv.writer(csvfile)
-        writer.writerow(['Nose', 'Neck', 'RShoulder', 'RElbow', 'RWrist', 'LShoulder', 'LElbow', 'LWrist', 'MidHip', 'RHip', 'RKnee', 'RAnkle', 'LHip', 'LAnkle', 'REye', 'LEye', 'REar', 'LEar'])  # 헤더 추가
-        for n_value, group_entries in grouped_data.items():
-            pointer = 0
-            temp = []
-            for i in range(18):
-                if pointer >= len(group_entries) or (i != group_entries[pointer][0]):
-                    temp.append((-1, -1))
-                    #writer.writerow((keypoint[i], (-1, -1)))
-                else:
-                    temp.append((group_entries[pointer][1], group_entries[pointer][2]))
-                    #writer.writerow((keypoint[i], (group_entries[pointer][1], group_entries[pointer][2]))) # keypoint, x, y
-                    pointer += 1
 
-            writer.writerow(temp)
+    name = "test"+"_"+filename
+    writer = []
+    writer.append(['Img', 'NoseX', 'NoseY', 'NeckX','NeckY', 'RShoulderX','RShoulderY','RElbowX','RElbowY', 'RWristX','RWristY', 'LShoulderX','LShoulderY', 
+                         'LElbowX','LElbowY', 'LWristX','LWristY', 'MidHipX','MidHipY', 'RHipX','RHipY', 'RKneeX','RKneeY','AnkleX','AnkleY', 'LHipX','LHipY', 
+                         'LAnkleX','LAnkleY', 'REyeX', 'REyeY','LEyeX', 'LEyeY','REarX','REarY', 'LEarX','LEarY'])  # 헤더 추가
+    
+    for n_value, group_entries in grouped_data.items():
+        pointer = 0
+        temp = []
+        temp.append(name)
+        for i in range(18):
+            if pointer >= len(group_entries) or (i != group_entries[pointer][0]):
+                temp.append(-1)
+                temp.append(-1)
+            else:
+                temp.append(group_entries[pointer][1])
+                temp.append(group_entries[pointer][2])
+                pointer += 1
+        writer.append(temp)
+    return pd.DataFrame(writer[1:], columns=writer[0])
+        
 
 def save_person_sepXY(img, data,mode,risk_or_normal, filename):
     h = img.shape[0]
     w = img.shape[1]
-    print(h,w)
+    #print(h,w)
+
     # i : 관절번호
     # n : 사람 번호 (여러 명 있을 때)
     # x , y
-    pass
     import csv
     keypoint = ['Nose', 'Neck', 'RShoulder', 'RElbow', 'RWrist', 'LShoulder', 'LElbow', 'LWrist', 'MidHip', 'RHip', 'RKnee', 'RAnkle', 'LHip', 'LAnkle', 'REye', 'LEye', 'REar', 'LEar']
 
     grouped_data = {}
     current_time = datetime.now().strftime("%y%m%d_%Hh%mM%S")
-
 
     for entry in data:
         n_value = entry[1]
@@ -123,7 +120,7 @@ def save_person_sepXY(img, data,mode,risk_or_normal, filename):
 
 
 # draw the body keypoint and lims
-def draw_bodypose(filename,canvas, candidate, subset,mode,risk_or_normal):
+def draw_bodypose(filename, canvas, candidate, subset,mode,risk_or_normal):
     stickwidth = 4
     global name
     limbSeq = [[2, 3], [2, 6], [3, 4], [4, 5], [6, 7], [7, 8], [2, 9], [9, 10], \
@@ -143,7 +140,12 @@ def draw_bodypose(filename,canvas, candidate, subset,mode,risk_or_normal):
             #print(i, n, x, y)
             save.append(((i, x, y), n))
             cv2.circle(canvas, (int(x), int(y)), 4, colors[i], thickness=-1)
-    save_person_sepXY(canvas, save,mode,risk_or_normal, filename)
+
+    if mode == 'test':
+        return save_person_test(save, filename)
+    else:
+        save_person_sepXY(canvas, save,mode,risk_or_normal, filename)
+        
     for i in range(17):
         for n in range(len(subset)):
             index = subset[n][np.array(limbSeq[i]) - 1]
