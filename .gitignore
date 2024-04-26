@@ -1,4 +1,4 @@
-hiddenlayer/
+Shiddenlayer/
 *.pth
 *.caffemodel
 .idea/
@@ -6,5 +6,7 @@ hiddenlayer/
 **/__pycache__
 *.prototxt
 videos/
-
+*.csv
+test.py
 data/
+venv/
