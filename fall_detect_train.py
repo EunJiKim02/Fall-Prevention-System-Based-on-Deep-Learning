@@ -1,11 +1,10 @@
-
 import pandas as pd
 from pycaret.classification import *
 import os
 import warnings
 warnings.filterwarnings("ignore")
 
-#from openpose.src.util import mergecsv
+from openpose.src.util import mergecsv
 
 
 '''
@@ -52,5 +51,5 @@ def main():
    
 
 if __name__ == "__main__":
-    #mergecsv()
+    mergecsv()
     main()
