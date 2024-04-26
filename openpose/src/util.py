@@ -39,7 +39,7 @@ def transfer(model, model_weights):
         transfered_model_weights[weights_name] = model_weights['.'.join(weights_name.split('.')[1:])]
     return transfered_model_weights
 
-def save_person(data,mode,risk_or_normal):
+def save_person(data,mode,risk_or_normal, filename):
     # i : 관절번호
     # n : 사람 번호 (여러 명 있을 때)
     # x , y
@@ -56,7 +56,7 @@ def save_person(data,mode,risk_or_normal):
         if n_value not in grouped_data:
             grouped_data[n_value] = []
         grouped_data[n_value].append(entry[0])
-    filename = f'data/{mode}/pose/{risk_or_normal}/{current_time}.csv'
+    filename = f'data/{mode}/pose/{risk_or_normal}/{filename}.csv'
     with open(filename, 'a+', newline='') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(['Nose', 'Neck', 'RShoulder', 'RElbow', 'RWrist', 'LShoulder', 'LElbow', 'LWrist', 'MidHip', 'RHip', 'RKnee', 'RAnkle', 'LHip', 'LAnkle', 'REye', 'LEye', 'REar', 'LEar'])  # 헤더 추가
@@ -74,11 +74,52 @@ def save_person(data,mode,risk_or_normal):
 
             writer.writerow(temp)
 
+def save_person_sepXY(data,mode,risk_or_normal, filename):
+    # i : 관절번호
+    # n : 사람 번호 (여러 명 있을 때)
+    # x , y
+    pass
+    import csv
+    keypoint = ['Nose', 'Neck', 'RShoulder', 'RElbow', 'RWrist', 'LShoulder', 'LElbow', 'LWrist', 'MidHip', 'RHip', 'RKnee', 'RAnkle', 'LHip', 'LAnkle', 'REye', 'LEye', 'REar', 'LEar']
+
+    grouped_data = {}
+    current_time = datetime.now().strftime("%y%m%d_%Hh%mM%S")
+
+
+    for entry in data:
+        n_value = entry[1]
+        if n_value not in grouped_data:
+            grouped_data[n_value] = []
+        grouped_data[n_value].append(entry[0])
+    name = risk_or_normal+"_"+filename
+    filename = f'data/{mode}/pose/{risk_or_normal}/{filename}.csv'
+    with open(filename, 'a+', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(['Img', 'NoseX', 'NoseY', 'NeckX','NeckY', 'RShoulderX','RShoulderY','RElbowX','RElbowY', 'RWristX','RWristY', 'LShoulderX','LShoulderY', 
+                         'LElbowX','LElbowY', 'LWristX','LWristY', 'MidHipX','MidHipY', 'RHipX','RHipY', 'RKneeX','RKneeY','AnkleX','AnkleY', 'LHipX','LHipY', 
+                         'LAnkleX','LAnkleY', 'REyeX', 'REyeY','LEyeX', 'LEyeY','REarX','REarY', 'LEarX','LEarY'])  # 헤더 추가
+        for n_value, group_entries in grouped_data.items():
+            pointer = 0
+            temp = []
+            temp.append(name)
+            for i in range(18):
+                if pointer >= len(group_entries) or (i != group_entries[pointer][0]):
+                    temp.append(-1)
+                    temp.append(-1)
+                    #writer.writerow((keypoint[i], (-1, -1)))
+                else:
+                    temp.append(group_entries[pointer][1])
+                    temp.append(group_entries[pointer][2])
+                    #writer.writerow((keypoint[i], (group_entries[pointer][1], group_entries[pointer][2]))) # keypoint, x, y
+                    pointer += 1
+
+            writer.writerow(temp)
 
 
 # draw the body keypoint and lims
-def draw_bodypose(canvas, candidate, subset,mode,risk_or_normal):
+def draw_bodypose(filename,canvas, candidate, subset,mode,risk_or_normal):
     stickwidth = 4
+    global name
     limbSeq = [[2, 3], [2, 6], [3, 4], [4, 5], [6, 7], [7, 8], [2, 9], [9, 10], \
                [10, 11], [2, 12], [12, 13], [13, 14], [2, 1], [1, 15], [15, 17], \
                [1, 16], [16, 18], [3, 17], [6, 18]]
@@ -93,10 +134,10 @@ def draw_bodypose(canvas, candidate, subset,mode,risk_or_normal):
             if index == -1:
                 continue
             x, y = candidate[index][0:2]
-            print(i, n, x, y)
+            #print(i, n, x, y)
             save.append(((i, x, y), n))
             cv2.circle(canvas, (int(x), int(y)), 4, colors[i], thickness=-1)
-    save_person(save,mode,risk_or_normal)
+    save_person_sepXY(save,mode,risk_or_normal, filename)
     for i in range(17):
         for n in range(len(subset)):
             index = subset[n][np.array(limbSeq[i]) - 1]
@@ -112,8 +153,9 @@ def draw_bodypose(canvas, candidate, subset,mode,risk_or_normal):
             polygon = cv2.ellipse2Poly((int(mY), int(mX)), (int(length / 2), stickwidth), int(angle), 0, 360, 1)
             cv2.fillConvexPoly(cur_canvas, polygon, colors[i])
             canvas = cv2.addWeighted(canvas, 0.4, cur_canvas, 0.6, 0)
-    # plt.imsave("preview.jpg", canvas[:, :, [2, 1, 0]])
+    plt.imsave(f"./data/train/pose/img/{risk_or_normal}/{filename}", canvas[:, :, [2, 1, 0]])
     # plt.imshow(canvas[:, :, [2, 1, 0]])
+    print("complete")
     return canvas
 
 def draw_handpose(canvas, all_hand_peaks, show_number=False):
@@ -238,7 +280,8 @@ def npmax(array):
     i = arrayvalue.argmax()
     j = arrayindex[i]
     return i, j
-  
+import os
+import pandas as pd
   
 def mergecsv(root_folder='./data/train/pose/', save_loc='./data/train/pose/', filename='dataset.csv'):
     
@@ -254,10 +297,11 @@ def mergecsv(root_folder='./data/train/pose/', save_loc='./data/train/pose/', fi
                 file_path = os.path.join(folder_path, file)
                 df = pd.read_csv(file_path)
                 df['label'] = label
+                print(df)
                 all_data.append(df)
 
-    combined_df = pd.concat(all_data, ignore_index=True)
+    combined_df = pd.concat(all_data)
 
-    # print(combined_df)
-    combined_df.to_csv(f'{save_loc}dataset.csv', index=False)
+    #print(combined_df)
+    combined_df.to_csv(f'{save_loc}dataset.csv', index=True)
     

@@ -5,7 +5,7 @@ import os
 import warnings
 warnings.filterwarnings("ignore")
 
-from openpose.src.util import mergecsv
+#from openpose.src.util import mergecsv
 
 
 '''
@@ -21,18 +21,23 @@ from openpose.src.util import mergecsv
 
 
 def fall_detect_model_train(df, path, ensemble = False, n_select=3):
-
-    clf = setup(data = df, target = 'label', fold=5, index=True, use_gpu=False, session_id=777, verbose=True)
-    model = compare_models(sort='F1', fold = 5, n_select=1,verbose=True)
+    df = df.iloc[:,1:]
+    print(df)
+    clf = setup(data = df, target = 'label', fold=3, index=False, use_gpu=False, session_id=777, verbose=True)
+    model = compare_models(sort='f1', fold = 3, n_select=1,verbose=True)
     if ensemble:
-        best_models = compare_models(sort='F1', fold = 5, n_select = n_select,verbose=True)
+        best_models = compare_models(sort='Accuracy', fold = 5, n_select = n_select,verbose=True, exclude=['ridge','sgd'])
         model = blend_models(estimator_list =  best_models,
                        fold = 5,
                        method = 'soft',
-                       optimize='F1',
+                       optimize='Accuracy',
                        )
+        
 
-    final_model = finalize_model(model)
+    tuned_model = tune_model(model, optimize='Accuracy', n_iter=10)
+
+
+    final_model = finalize_model(tuned_model)
     
     if not os.path.exists(path):
         os.makedirs(path)
@@ -43,9 +48,9 @@ def main():
     df = pd.read_csv('./data/train/pose/dataset.csv')
     print(df)
     model_path = './checkpoint/'
-    fall_detect_model_train(df, model_path)
+    fall_detect_model_train(df, model_path, ensemble = False)
    
 
 if __name__ == "__main__":
-    mergecsv()
+    #mergecsv()
     main()
