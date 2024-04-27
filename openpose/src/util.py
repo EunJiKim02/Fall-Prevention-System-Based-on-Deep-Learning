@@ -40,6 +40,8 @@ def transfer(model, model_weights):
         transfered_model_weights[weights_name] = model_weights['.'.join(weights_name.split('.')[1:])]
     return transfered_model_weights
 
+
+
 def save_person_test(data, filename):
 
     grouped_data = {}
@@ -50,12 +52,14 @@ def save_person_test(data, filename):
             grouped_data[n_value] = []
         grouped_data[n_value].append(entry[0])
 
-    name = "test"+"_"+filename
+
     writer = []
     writer.append(['Img', 'NoseX', 'NoseY', 'NeckX','NeckY', 'RShoulderX','RShoulderY','RElbowX','RElbowY', 'RWristX','RWristY', 'LShoulderX','LShoulderY', 
                          'LElbowX','LElbowY', 'LWristX','LWristY', 'MidHipX','MidHipY', 'RHipX','RHipY', 'RKneeX','RKneeY','AnkleX','AnkleY', 'LHipX','LHipY', 
                          'LAnkleX','LAnkleY', 'REyeX', 'REyeY','LEyeX', 'LEyeY','REarX','REarY', 'LEarX','LEarY'])  # 헤더 추가
     
+    name = "test"+"_"+filename
+
     for n_value, group_entries in grouped_data.items():
         pointer = 0
         temp = []
@@ -80,41 +84,47 @@ def save_person_sepXY(img, data,mode,risk_or_normal, filename):
     # n : 사람 번호 (여러 명 있을 때)
     # x , y
     import csv
-    keypoint = ['Nose', 'Neck', 'RShoulder', 'RElbow', 'RWrist', 'LShoulder', 'LElbow', 'LWrist', 'MidHip', 'RHip', 'RKnee', 'RAnkle', 'LHip', 'LAnkle', 'REye', 'LEye', 'REar', 'LEar']
 
+    writer = []
+
+    writer.append(['Img', 'NoseX', 'NoseY', 'NeckX','NeckY', 'RShoulderX','RShoulderY','RElbowX','RElbowY', 'RWristX','RWristY', 'LShoulderX','LShoulderY', 
+                         'LElbowX','LElbowY', 'LWristX','LWristY', 'MidHipX','MidHipY', 'RHipX','RHipY', 'RKneeX','RKneeY','AnkleX','AnkleY', 'LHipX','LHipY', 
+                         'LAnkleX','LAnkleY', 'REyeX', 'REyeY','LEyeX', 'LEyeY','REarX','REarY', 'LEarX','LEarY', 'label'])  # 헤더 추가
+    
     grouped_data = {}
-    current_time = datetime.now().strftime("%y%m%d_%Hh%mM%S")
+    name = "train"+"_"+filename
 
     for entry in data:
         n_value = entry[1]
         if n_value not in grouped_data:
             grouped_data[n_value] = []
         grouped_data[n_value].append(entry[0])
-    name = risk_or_normal+"_"+filename
-    filename = f'data/{mode}/pose/{risk_or_normal}/{filename}.csv'
-    with open(filename, 'a+', newline='') as csvfile:
-        writer = csv.writer(csvfile)
-        writer.writerow(['Img', 'NoseX', 'NoseY', 'NeckX','NeckY', 'RShoulderX','RShoulderY','RElbowX','RElbowY', 'RWristX','RWristY', 'LShoulderX','LShoulderY', 
-                         'LElbowX','LElbowY', 'LWristX','LWristY', 'MidHipX','MidHipY', 'RHipX','RHipY', 'RKneeX','RKneeY','AnkleX','AnkleY', 'LHipX','LHipY', 
-                         'LAnkleX','LAnkleY', 'REyeX', 'REyeY','LEyeX', 'LEyeY','REarX','REarY', 'LEarX','LEarY'])  # 헤더 추가
-        for n_value, group_entries in grouped_data.items():
-            pointer = 0
-            temp = []
-            temp.append(name)
-            for i in range(18):
-                if pointer >= len(group_entries) or (i != group_entries[pointer][0]):
-                    temp.append(-1)
-                    temp.append(-1)
-                    #writer.writerow((keypoint[i], (-1, -1)))
-                else:
-                    X = np.floor((group_entries[pointer][1] / w) * 10000) / 10000
-                    Y = np.floor((group_entries[pointer][2] / h) * 10000) / 10000
-                    temp.append(X)
-                    temp.append(Y)
-                    #writer.writerow((keypoint[i], (group_entries[pointer][1], group_entries[pointer][2]))) # keypoint, x, y
-                    pointer += 1
 
-            writer.writerow(temp)
+    for n_value, group_entries in grouped_data.items():
+        pointer = 0
+        temp = []
+        temp.append(name)
+        for i in range(18):
+
+            if pointer >= len(group_entries) or (i != group_entries[pointer][0]):
+                temp.append(-1)
+                temp.append(-1)
+            else:
+                X = np.floor((group_entries[pointer][1] / w) * 10000) / 10000
+                Y = np.floor((group_entries[pointer][2] / h) * 10000) / 10000
+                temp.append(X)
+                temp.append(Y)
+                pointer += 1
+
+        if risk_or_normal == 'risk':
+            temp.append(1)
+        else:
+            temp.append(0)
+
+        writer.append(temp)
+
+    return pd.DataFrame(writer[1:], columns=writer[0])
+
 
 
 # draw the body keypoint and lims
@@ -139,11 +149,7 @@ def draw_bodypose(filename, canvas, candidate, subset,mode,risk_or_normal):
             save.append(((i, x, y), n))
             cv2.circle(canvas, (int(x), int(y)), 4, colors[i], thickness=-1)
 
-    if mode == 'test':
-        return save_person_test(save, filename)
-    else:
-        save_person_sepXY(canvas, save,mode,risk_or_normal, filename)
-        
+
     for i in range(17):
         for n in range(len(subset)):
             index = subset[n][np.array(limbSeq[i]) - 1]
@@ -162,7 +168,14 @@ def draw_bodypose(filename, canvas, candidate, subset,mode,risk_or_normal):
     plt.imsave(f"./data/{mode}/pose/img/{risk_or_normal}/{filename}", canvas[:, :, [2, 1, 0]])
     # plt.imshow(canvas[:, :, [2, 1, 0]])
     print("complete")
-    return canvas
+
+
+    if mode == 'test':
+        return save_person_test(save, filename)
+    else:
+        return save_person_sepXY(canvas, save,mode,risk_or_normal, filename)
+        
+
 
 def draw_handpose(canvas, all_hand_peaks, show_number=False):
     edges = [[0, 1], [1, 2], [2, 3], [3, 4], [0, 5], [5, 6], [6, 7], [7, 8], [0, 9], [9, 10], \
@@ -286,29 +299,9 @@ def npmax(array):
     i = arrayvalue.argmax()
     j = arrayindex[i]
     return i, j
+
 import os
 import pandas as pd
-  
-def mergecsv(root_folder='./data/train/pose/', save_loc='./data/train/pose/', filename='dataset.csv'):
-    
-    folders = ['risk', 'normal']
-
-    all_data = []
-
-    for folder in folders:
-        folder_path = os.path.join(root_folder, folder)
-        label = 1 if folder == 'risk' else 0
-        for file in os.listdir(folder_path):
-            if file.endswith('.csv'):
-                file_path = os.path.join(folder_path, file)
-                df = pd.read_csv(file_path, index_col = 0)
-                df['label'] = label
-                all_data.append(df)
-
-    combined_df = pd.concat(all_data)
-
-    #print(combined_df)
-    combined_df.to_csv(f'{save_loc}dataset.csv', index=True)
 
 def mergecsv_2(root_folder='./data/test/pose/', save_loc='./data/test/pose/', filename='dataset.csv'):
     
