@@ -12,6 +12,8 @@ import pickle
 
 warnings.filterwarnings("ignore")
 
+from openpose.src.util import mergecsv_2
+
 
 '''
 용도: 정상 행동과 낙상 위험 행동 분류 모델 평가
@@ -50,24 +52,29 @@ def save_confusion_matrix(y_true, y_pred,save_path):
 
 def fall_detect_predict(csv_file,model_path,save_path):
     pred_df = pd.read_csv(csv_file)
-    drop_df = pred_df.drop(labels='label', axis = 1)
 
     final_model = load_model(model_path)
     pred_list = predict_model(final_model,pred_df)['prediction_label'].to_list()
     pred_df['pred'] = pred_list
+    gtlist = pred_df['label'].to_list()
     
     save_csv_path = os.path.join(save_path,'result.csv')
-    pred_df.to_csv(save_csv_path)
-    print('Complete save result.csv')
+    pred_df.to_csv(save_csv_path, index=False)
+
+    accuracy = accuracy_score(gtlist, pred_list)
+    accuracy*=100
+    
+    print(f'accuracy : {accuracy:.2f}')
     
     
 
 def main():
-    csv_file = './data/train/pose/dataset.csv'
-    model_path = './checkpoint/model'
+    csv_file = './data/test/pose/dataset.csv'
+    model_path = './checkpoint/'
     result_path = './result'
     fall_detect_predict(csv_file, model_path, result_path)
 
 
 if __name__ == "__main__":
+    mergecsv_2()
     main()
