@@ -1,12 +1,19 @@
-Shiddenlayer/
-*.pth
-*.caffemodel
-.idea/
-.ipynb_checkpoints/
-**/__pycache__
-*.prototxt
-videos/
-*.csv
-test.py
+# file directory
 data/
 venv/
+Shiddenlayer/
+.idea/
+.ipynb_checkpoints/
+videos/
+
+# file
+*.pth
+*.pkl
+*.caffemodel
+*.csv
+*.log
+*.prototxt
+test.py
+
+# pycache
+**/__pycache__

@@ -4,9 +4,6 @@ import os
 import warnings
 warnings.filterwarnings("ignore")
 
-from openpose.src.util import mergecsv
-
-
 '''
 용도: 정상 행동과 낙상 위험 행동 분류기 학습 및 모델 선정
 
@@ -17,7 +14,6 @@ from openpose.src.util import mergecsv
 (저장경로: ./checkpoint)
 
 '''
-
 
 def fall_detect_model_train(df, path, ensemble = False, n_select=3):
     df = df.iloc[:,1:]
@@ -44,12 +40,11 @@ def fall_detect_model_train(df, path, ensemble = False, n_select=3):
     print()
 
 def main():
-    df = pd.read_csv('./data/train/pose/dataset.csv')
+    df = pd.read_csv('./data/train/pose/output.csv')
     print(df)
     model_path = './checkpoint/'
     fall_detect_model_train(df, model_path, ensemble = False)
    
 
 if __name__ == "__main__":
-    mergecsv()
     main()
