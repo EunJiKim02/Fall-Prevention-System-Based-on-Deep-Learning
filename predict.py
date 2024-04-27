@@ -1,6 +1,3 @@
-from cgi import test
-from pyexpat import model
-from unittest import result
 import warnings
 import numpy as np
 import matplotlib.pyplot as plt
@@ -60,9 +57,10 @@ def data_preprocessing(img_path):
         print(f"No objects of the '{text_prompt}' prompt detected in the image.")
     else:
         cropped_img = crop_image(image_pil, boxes)
-    print(type(cropped_img))
-    open_cv_image = np.array(cropped_img)
-    open_cv_image = open_cv_image[:, :, ::-1].copy()
+
+        # print(type(cropped_img))
+        open_cv_image = np.array(cropped_img)
+        open_cv_image = open_cv_image[:, :, ::-1].copy()
 
     return open_cv_image
 
@@ -103,13 +101,9 @@ def evaluate(pred_list, gt_csvfile, save_path):
         }
     )
     result_df.to_csv(save_csv_path, index=False)
-    print("Complete save result.csv")
-
-    # accuracy 계산
     acc = accuracy_score(gtlist, pred_list)
     acc *= 100
-
-    print(f"Accuracy : {acc :.2f}")
+    print(f"Accuracy: {acc:.2f}%")
 
 
 def main():
