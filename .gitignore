@@ -14,6 +14,9 @@ videos/
 *.log
 *.prototxt
 test.py
-
-# pycache
 **/__pycache__
+
+data_name.py
+*.zip
+source/
+source_1/
