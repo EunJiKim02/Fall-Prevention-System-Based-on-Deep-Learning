@@ -20,14 +20,12 @@ def main():
     mode='train'
     root_path = f'./data/{mode}/origin/'
     folder_names = os.listdir(root_path)
-    
-
 
     for folder_name in folder_names:
         img_list=os.listdir(os.path.join(root_path, folder_name))
         risk_or_normal=folder_name
 
-        save_path = f'./data/{mode}/agumentation/{risk_or_normal}/'
+        save_path = f'./data/{mode}/augmentation/{risk_or_normal}/'
         if not os.path.exists(save_path):
             os.makedirs(save_path)
 
