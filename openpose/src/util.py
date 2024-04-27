@@ -107,8 +107,8 @@ def save_person_sepXY(img, data,mode,risk_or_normal, filename):
                     temp.append(-1)
                     #writer.writerow((keypoint[i], (-1, -1)))
                 else:
-                    X = np.floor((group_entries[pointer][1] / h) * 10000) / 10000
-                    Y = np.floor((group_entries[pointer][2] / w) * 10000) / 10000
+                    X = np.floor((group_entries[pointer][1] / w) * 10000) / 10000
+                    Y = np.floor((group_entries[pointer][2] / h) * 10000) / 10000
                     temp.append(X)
                     temp.append(Y)
                     #writer.writerow((keypoint[i], (group_entries[pointer][1], group_entries[pointer][2]))) # keypoint, x, y
