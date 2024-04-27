@@ -11,10 +11,10 @@ from openpose.src import util
 from openpose.src.body import Body
 import copy
 from sklearn.metrics import accuracy_score
-from pycaret.classification import *
+from pycaret.classification import *  # type: ignore
+from tqdm import tqdm
 
 warnings.filterwarnings("ignore")
-from tqdm import tqdm
 
 
 def crop_image(image, boxes):
@@ -57,9 +57,10 @@ def data_preprocessing(img_path):
         print(f"No objects of the '{text_prompt}' prompt detected in the image.")
     else:
         cropped_img = crop_image(image_pil, boxes)
-    print(type(cropped_img))  
-    open_cv_image = np.array(cropped_img)
-    open_cv_image = open_cv_image[:, :, ::-1].copy()  
+
+        # print(type(cropped_img))
+        open_cv_image = np.array(cropped_img)
+        open_cv_image = open_cv_image[:, :, ::-1].copy()
 
     return open_cv_image
 
@@ -71,40 +72,57 @@ def pose_estimation(cropped_img):
     risk_or_normal = "test"
     # oriImg = cv2.imread(img_path)
     candidate, subset = body_estimation(cropped_img)
-    #print(type(cropped_img))
+    # print(type(cropped_img))
     canvas = copy.deepcopy(cropped_img)
-    df = util.draw_bodypose(
-        mode, canvas, candidate, subset, mode, risk_or_normal
-    )
+    df = util.draw_bodypose(mode, canvas, candidate, subset, mode, risk_or_normal)
 
     return df
 
-def fall_detect_predict(csv_file, gt_csvfile, model_path, save_path):
-    pred_df = pd.read_csv(csv_file)
+
+def fall_detect(pred_df, final_model):
+    pred_list = predict_model(final_model, pred_df)["prediction_label"].to_list()
+
+    return pred_list[0]
+
+
+def evaluate(pred_list, gt_csvfile, save_path):
     gt_df = pd.read_csv(gt_csvfile)
 
-    final_model = load_model(model_path)
-    pred_list = predict_model(final_model, pred_df)["prediction_label"].to_list()
-    pred_df["pred"] = pred_list
+    imgList = gt_df["img"].tolist()
     gtlist = gt_df["gt"].tolist()
 
+    os.makedirs(save_path, exist_ok=True)
     save_csv_path = os.path.join(save_path, "result.csv")
-    pred_df.to_csv(save_csv_path)
-    print("Complete save result.csv")
-
-    # accuracy 계산
+    result_df = pd.DataFrame(
+        {
+            "img": imgList,
+            "pred": pred_list,
+            "label": gtlist,
+        }
+    )
+    result_df.to_csv(save_csv_path, index=False)
     acc = accuracy_score(gtlist, pred_list)
     acc *= 100
-
-    print(f"F1 Score : {acc :.2f}")
+    print(f"Accuracy: {acc:.2f}%")
 
 
 def main():
-    img_path = ['data/test/0_1.jpg', 'data/test/0_1 copy.jpg']
-    for d in img_path:
-        cropped_img = data_preprocessing(d)
+    test_dir = f"data/test/"
+    img_pathes = [test_dir + img for img in os.listdir(test_dir)]
+    model_name = ""
+    model_name = model_name.split(".")[0]
+    model_path = f"checkpoint/{model_name}"
+    model = load_model(model_path)
+    gt_path = "data/gt.csv"
+    preds = []
+
+    for test_img in img_pathes:
+        cropped_img = data_preprocessing(test_img)
         df = pose_estimation(cropped_img)
-        print(df)
+        pred = fall_detect(df, model)
+        preds.append(pred)
+
+    evaluate(preds, gt_path, "result")
 
 
 if __name__ == "__main__":
