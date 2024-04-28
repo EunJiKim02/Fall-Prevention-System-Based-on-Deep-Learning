@@ -5,14 +5,12 @@ from PIL import Image
 from lang_sam import LangSAM
 import numpy as np
 import os
-import cv2
 import pandas as pd
 from openpose.src import util
 from openpose.src.body import Body
 import copy
 from sklearn.metrics import accuracy_score
 from pycaret.classification import *  # type: ignore
-from tqdm import tqdm
 
 warnings.filterwarnings("ignore")
 
@@ -20,8 +18,6 @@ warnings.filterwarnings("ignore")
 def crop_image(image, boxes):
     fig, ax = plt.subplots()
     ax.imshow(image)
-    # ax.set_title("Image with Bounding Boxes")
-    print("==============>", type(image))
     ax.axis("off")
     img_x, img_y = image.size
 
@@ -45,11 +41,9 @@ def crop_image(image, boxes):
         return crop_image
 
 
-def data_preprocessing(img_path):
-    model = LangSAM("vit_h")
-    text_prompt = "bed"
+def data_preprocessing(model, text_prompt, img_path):
+
     cropped_img = None
-    # width, height = get_image_size(img_path)
     image_pil = Image.open(img_path).convert("RGB")
     masks, boxes, phrases, logits = model.predict(image_pil, text_prompt)
 
@@ -58,7 +52,7 @@ def data_preprocessing(img_path):
     else:
         cropped_img = crop_image(image_pil, boxes)
 
-        # print(type(cropped_img))
+        # Convert PIL image to OpenCV image
         open_cv_image = np.array(cropped_img)
         open_cv_image = open_cv_image[:, :, ::-1].copy()
 
@@ -69,10 +63,8 @@ def pose_estimation(cropped_img):
     body_estimation = Body("openpose/model/body_pose_model.pth")
 
     mode = "test"
-    risk_or_normal = "test"
-    # oriImg = cv2.imread(img_path)
+    risk_or_normal = ""
     candidate, subset = body_estimation(cropped_img)
-    # print(type(cropped_img))
     canvas = copy.deepcopy(cropped_img)
     df = util.draw_bodypose(mode, canvas, candidate, subset, mode, risk_or_normal)
 
@@ -107,6 +99,8 @@ def evaluate(pred_list, gt_csvfile, save_path):
 
 
 def main():
+    lsam = LangSAM("vit_h")
+    text_prompt = "bed"
     test_dir = f"data/test/"
     img_pathes = [test_dir + img for img in os.listdir(test_dir)]
     model_name = ""
@@ -117,7 +111,7 @@ def main():
     preds = []
 
     for test_img in img_pathes:
-        cropped_img = data_preprocessing(test_img)
+        cropped_img = data_preprocessing(lsam, text_prompt, test_img)
         df = pose_estimation(cropped_img)
         pred = fall_detect(df, model)
         preds.append(pred)
