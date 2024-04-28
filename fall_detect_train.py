@@ -1,5 +1,5 @@
 import pandas as pd
-from pycaret.classification import *
+from pycaret.classification import *  # type: ignore
 import os
 import warnings
 
