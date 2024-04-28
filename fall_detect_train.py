@@ -63,11 +63,11 @@ def fall_detect_model_train(df, path, ensemble=False, n_select=3):
 
 
 def main():
-    df = pd.read_csv("./data/train/pose/dataset.csv")
-    # print(df)
-    model_path = "./checkpoint/"
-    fall_detect_model_train(df, model_path, ensemble=False)
-
+    df = pd.read_csv('./data/train/pose/dataset.csv')
+    print(df)
+    model_path = './checkpoint/'
+    fall_detect_model_train(df, model_path, ensemble = False)
+   
 
 if __name__ == "__main__":
     main()
