@@ -89,7 +89,7 @@ def evaluate(pred_list, gt_csvfile, save_path):
     gt_df = pd.read_csv(gt_csvfile)
 
     imgList = gt_df["img"].tolist()
-    gtlist = gt_df["gt"].tolist()
+    gtlist = gt_df["label"].tolist()
 
     os.makedirs(save_path, exist_ok=True)
     save_csv_path = os.path.join(save_path, "result.csv")
