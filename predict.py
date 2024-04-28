@@ -93,9 +93,9 @@ def evaluate(pred_list, gt_csvfile, save_path):
         }
     )
     result_df.to_csv(save_csv_path, index=False)
-    acc = accuracy_score(gtlist, pred_list)
-    acc *= 100
-    print(f"Accuracy: {acc:.2f}%")
+    accuracy = accuracy_score(gtlist, pred_list)
+    accuracy *= 100
+    print(f"Accuracy: {accuracy:.2f}%")
 
 
 def main():
