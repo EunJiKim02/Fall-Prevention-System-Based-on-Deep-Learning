@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import os
 
-source_path = "./source"
+source_path = "./data/crop"
 
 for high in os.listdir(source_path):
     print(high)
