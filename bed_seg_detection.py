@@ -59,11 +59,11 @@ def get_image_size(image_path):
 def main():
     model = LangSAM("vit_h")
     text_prompt = "bed"
-    mode='test'
+    mode='train'
     root_path = f'./data/{mode}/origin/'
     #normal, risk folder 이름 저장
     folder_names = os.listdir(root_path)
-    folder_names.remove('.DS_Store')
+    #folder_names.remove('.DS_Store')
     print(folder_names)
 
     for folder_name in folder_names:
