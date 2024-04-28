@@ -4,9 +4,6 @@ from sklearn.metrics import accuracy_score
 from pycaret.classification import *
 import warnings
 import pandas as pd
-import matplotlib.pyplot as plt
-from sklearn.metrics import confusion_matrix
-import seaborn as sns
 
 warnings.filterwarnings("ignore")
 
@@ -19,32 +16,7 @@ warnings.filterwarnings("ignore")
 결과 값을 csv파일로 저장 
 (저장 경로: ./result/)
 
-
-
-혼동행렬 이미지 저장(저장 경로: ./result/confusion.png)
 """
-
-
-def save_confusion_matrix(y_true, y_pred, save_path):
-    # 혼동행렬 계산
-    cm = confusion_matrix(y_true, y_pred)
-
-    # 혼동행렬 시각화
-    fig, ax = plt.subplots()
-    sns.heatmap(cm, annot=True, ax=ax, cmap="Blues", fmt="g")
-
-    # 라벨 추가
-    ax.set_xlabel("Predicted labels")
-    ax.set_ylabel("True labels")
-    ax.set_title("Confusion Matrix")
-    ax.xaxis.set_ticklabels(["Negative", "Positive"])
-    ax.yaxis.set_ticklabels(["Negative", "Positive"])
-
-    print("Complete save confusion_matrix image")
-    # 이미지로 저장
-    plt.savefig(save_path)
-
-    plt.show()
 
 
 def fall_detect_predict(csv_file, model_path, save_path):
