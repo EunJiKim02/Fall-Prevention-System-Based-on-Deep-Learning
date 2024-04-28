@@ -52,7 +52,6 @@ def save_person_test(data, filename):
             grouped_data[n_value] = []
         grouped_data[n_value].append(entry[0])
 
-
     writer = []
     writer.append(['Img', 'NoseX', 'NoseY', 'NeckX','NeckY', 'RShoulderX','RShoulderY','RElbowX','RElbowY', 'RWristX','RWristY', 'LShoulderX','LShoulderY', 
                          'LElbowX','LElbowY', 'LWristX','LWristY', 'MidHipX','MidHipY', 'RHipX','RHipY', 'RKneeX','RKneeY','AnkleX','AnkleY', 'LHipX','LHipY', 
@@ -83,7 +82,6 @@ def save_person_sepXY(img, data,mode,risk_or_normal, filename):
     # i : 관절번호
     # n : 사람 번호 (여러 명 있을 때)
     # x , y
-    import csv
 
     writer = []
 
@@ -165,7 +163,7 @@ def draw_bodypose(filename, canvas, candidate, subset,mode,risk_or_normal):
             polygon = cv2.ellipse2Poly((int(mY), int(mX)), (int(length / 2), stickwidth), int(angle), 0, 360, 1)
             cv2.fillConvexPoly(cur_canvas, polygon, colors[i])
             canvas = cv2.addWeighted(canvas, 0.4, cur_canvas, 0.6, 0)
-    plt.imsave(f"./data/{mode}/pose/img/{risk_or_normal}/{filename}", canvas[:, :, [2, 1, 0]])
+#    plt.imsave(f"./data/{mode}/pose/img/{risk_or_normal}/{filename}", canvas[:, :, [2, 1, 0]])
     # plt.imshow(canvas[:, :, [2, 1, 0]])
     print("complete")
 
@@ -173,7 +171,7 @@ def draw_bodypose(filename, canvas, candidate, subset,mode,risk_or_normal):
     if mode == 'test':
         return save_person_test(save, filename)
     else:
-        return save_person_sepXY(canvas, save,mode,risk_or_normal, filename)
+        return save_person_sepXY(canvas, save, mode, risk_or_normal, filename)
         
 
 

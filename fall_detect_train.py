@@ -12,7 +12,6 @@ warnings.filterwarnings("ignore")
 
 우수한 분류기를 선택 후 모델 저장
 (저장경로: ./checkpoint)
-
 '''
 
 def fall_detect_model_train(df, path, ensemble = False, n_select=3):
@@ -40,7 +39,7 @@ def fall_detect_model_train(df, path, ensemble = False, n_select=3):
     print()
 
 def main():
-    df = pd.read_csv('./data/train/pose/output.csv')
+    df = pd.read_csv('./data/output.csv')
     print(df)
     model_path = './checkpoint/'
     fall_detect_model_train(df, model_path, ensemble = False)
