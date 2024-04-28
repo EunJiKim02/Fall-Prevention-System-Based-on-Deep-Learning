@@ -5,10 +5,9 @@ import matplotlib
 from datetime import datetime
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
-import numpy as np
 import matplotlib.pyplot as plt
-import cv2
 import csv
+import pandas as pd
 
 
 def padRightDownCorner(img, stride, padValue):
@@ -39,41 +38,6 @@ def transfer(model, model_weights):
     for weights_name in model.state_dict().keys():
         transfered_model_weights[weights_name] = model_weights['.'.join(weights_name.split('.')[1:])]
     return transfered_model_weights
-
-
-
-def save_person_test(data, filename):
-
-    grouped_data = {}
-
-    for entry in data:
-        n_value = entry[1]
-        if n_value not in grouped_data:
-            grouped_data[n_value] = []
-        grouped_data[n_value].append(entry[0])
-
-
-    writer = []
-    writer.append(['Img', 'NoseX', 'NoseY', 'NeckX','NeckY', 'RShoulderX','RShoulderY','RElbowX','RElbowY', 'RWristX','RWristY', 'LShoulderX','LShoulderY', 
-                         'LElbowX','LElbowY', 'LWristX','LWristY', 'MidHipX','MidHipY', 'RHipX','RHipY', 'RKneeX','RKneeY','AnkleX','AnkleY', 'LHipX','LHipY', 
-                         'LAnkleX','LAnkleY', 'REyeX', 'REyeY','LEyeX', 'LEyeY','REarX','REarY', 'LEarX','LEarY'])  # 헤더 추가
-    
-    name = "test"+"_"+filename
-
-    for n_value, group_entries in grouped_data.items():
-        pointer = 0
-        temp = []
-        temp.append(name)
-        for i in range(18):
-            if pointer >= len(group_entries) or (i != group_entries[pointer][0]):
-                temp.append(-1)
-                temp.append(-1)
-            else:
-                temp.append(group_entries[pointer][1])
-                temp.append(group_entries[pointer][2])
-                pointer += 1
-        writer.append(temp)
-    return pd.DataFrame(writer[1:], columns=writer[0])
         
 
 def save_person_sepXY(img, data,mode,risk_or_normal, filename):
@@ -92,7 +56,7 @@ def save_person_sepXY(img, data,mode,risk_or_normal, filename):
                          'LAnkleX','LAnkleY', 'REyeX', 'REyeY','LEyeX', 'LEyeY','REarX','REarY', 'LEarX','LEarY', 'label'])  # 헤더 추가
     
     grouped_data = {}
-    name = "train"+"_"+filename
+    name = mode+"_"+risk_or_normal +"_"+ filename
 
     for entry in data:
         n_value = entry[1]
@@ -165,15 +129,13 @@ def draw_bodypose(filename, canvas, candidate, subset,mode,risk_or_normal):
             polygon = cv2.ellipse2Poly((int(mY), int(mX)), (int(length / 2), stickwidth), int(angle), 0, 360, 1)
             cv2.fillConvexPoly(cur_canvas, polygon, colors[i])
             canvas = cv2.addWeighted(canvas, 0.4, cur_canvas, 0.6, 0)
-    plt.imsave(f"./data/{mode}/pose/img/{risk_or_normal}/{filename}", canvas[:, :, [2, 1, 0]])
+    #plt.imsave(f"./data/{mode}/pose/img/{risk_or_normal}/{filename}", canvas[:, :, [2, 1, 0]])
     # plt.imshow(canvas[:, :, [2, 1, 0]])
     print("complete")
 
 
-    if mode == 'test':
-        return save_person_test(save, filename)
-    else:
-        return save_person_sepXY(canvas, save,mode,risk_or_normal, filename)
+
+    return save_person_sepXY(canvas, save,mode,risk_or_normal, filename)
         
 
 
@@ -299,28 +261,3 @@ def npmax(array):
     i = arrayvalue.argmax()
     j = arrayindex[i]
     return i, j
-
-import os
-import pandas as pd
-
-def mergecsv_2(root_folder='./data/test/pose/', save_loc='./data/test/pose/', filename='dataset.csv'):
-    
-    folders = ['risk', 'normal']
-
-    all_data = []
-
-    for folder in folders:
-        folder_path = os.path.join(root_folder, folder)
-        label = 1 if folder == 'risk' else 0
-        for file in os.listdir(folder_path):
-            if file.endswith('.csv'):
-                file_path = os.path.join(folder_path, file)
-                df = pd.read_csv(file_path, index_col = 0)
-                df['label'] = label
-                all_data.append(df)
-
-    combined_df = pd.concat(all_data)
-
-    #print(combined_df)
-    combined_df.to_csv(f'{save_loc}dataset.csv', index=True)
-    
