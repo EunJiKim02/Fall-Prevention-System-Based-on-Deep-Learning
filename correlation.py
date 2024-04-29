@@ -28,5 +28,5 @@ file_path = "output_test.csv"
 #                         'LAnkleX','LAnkleY', 'REyeX', 'REyeY','LEyeX', 'LEyeY','REarX','REarY', 'LEarX','LEarY']
 
 df=pd.read_csv(file_path)
-df=df.drop(['NoseX','NoseY','REyeX', 'REyeY','LEyeX', 'LEyeY','REarX','REarY', 'LEarX','LEarY','LElbowX','LElbowY', 'LWristX','LWristY'],axis=1)
+df=df.drop(['NoseX','NoseY','REyeX', 'REyeY','LEyeX', 'LEyeY','REarX','REarY', 'LEarX','LEarY'],axis=1)
 df.to_csv('./column_drop_test.csv',index=None)
