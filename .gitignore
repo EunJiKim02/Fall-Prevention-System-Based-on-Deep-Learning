@@ -20,3 +20,5 @@ data_name.py
 *.zip
 source/
 source_1/
+openpose/src/util2.py
+*.gitignore
