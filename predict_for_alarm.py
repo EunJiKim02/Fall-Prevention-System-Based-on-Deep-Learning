@@ -9,7 +9,7 @@ import pandas as pd
 from openpose.src import util
 from openpose.src.body import Body
 import copy
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, recall_score, f1_score
 from pycaret.classification import *  # type: ignore
 
 warnings.filterwarnings("ignore")
@@ -73,8 +73,9 @@ def pose_estimation(cropped_img):
 
 def fall_detect(pred_df, final_model):
     pred_list = predict_model(final_model, pred_df)["prediction_label"].to_list()
+    pred = pred_list[0]
 
-    return pred_list[0]
+    return pred
 
 
 def evaluate(pred_list, gt_csvfile, save_path):
@@ -95,7 +96,14 @@ def evaluate(pred_list, gt_csvfile, save_path):
     result_df.to_csv(save_csv_path, index=False)
     accuracy = accuracy_score(gtlist, pred_list)
     accuracy *= 100
+    recall = recall_score(gtlist, pred_list, average="macro")
+    recall *= 100
+    f1score = f1_score(gtlist, pred_list, average="macro")
+    f1score *= 100
+
     print(f"Accuracy: {accuracy:.2f}%")
+    print(f"Recall: {recall:.2f}%")
+    print(f"F1 Score: {f1score:.2f}%")
 
 
 def main():
@@ -114,7 +122,8 @@ def main():
         cropped_img = data_preprocessing(lsam, text_prompt, test_img)
         df = pose_estimation(cropped_img)
         pred = fall_detect(df, model)
-        preds.append(pred)
+
+        # preds.append(pred)
 
     # evaluate(preds, gt_path, "result")
 
