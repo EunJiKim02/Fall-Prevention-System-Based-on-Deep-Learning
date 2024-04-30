@@ -16,6 +16,7 @@ videos/
 test.py
 **/__pycache__
 
+#etc
 data_name.py
 *.zip
 source/
