@@ -32,7 +32,7 @@ https://drive.google.com/drive/folders/1NCKVH2z7ljYXVJDb2eQDjhm2fmP9RDzY?usp=sha
   gdown https://drive.google.com/uc?id=1EULkcH_hhSU28qVc1jSJpCh2hGOrzpjK -O ./openpose/model/body_pose_model.pth
   ```
 
-- segmentation
+- detection
 
   ``` bash
   python bed_seg_detection.py
@@ -45,10 +45,15 @@ https://drive.google.com/drive/folders/1NCKVH2z7ljYXVJDb2eQDjhm2fmP9RDzY?usp=sha
   ```
 
 - classification
-
+  train
   ``` bash
   python fall_detect_train.py
   ```
+  test
+  ``` bash
+  python fall_detect_train.py
+  ```
+
 
 
 
