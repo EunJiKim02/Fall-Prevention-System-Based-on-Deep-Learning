@@ -13,11 +13,9 @@ from tqdm import tqdm
 https://github.com/luca-medeiros/lang-segment-anything
 https://github.com/IDEA-Research/GroundingDINO
 
-용도: 침대 영역 segmentation 및 detection
+용도: 침대 영역 detection
 
-코드실행 결과
-침대 영역을 segmentation 및 detection한 후 이미지를 저장
-
+코드실행 결과 : origin 폴더의 이미지를 침대 영역 기반으로 자른 후 crop 폴더에 이미지로 저장
 
 '''
 

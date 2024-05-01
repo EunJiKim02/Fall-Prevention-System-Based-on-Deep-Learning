@@ -1,7 +1,13 @@
 import pandas as pd
 
+'''
+용도 : 레이블과 키포인트 간의 상관행렬 분석
+
+코드실행 결과 : 상관행렬 값이 csv 파일로 저장
+'''
+
+
 # CSV 파일 경로 설정
-# file_path = "./data/train/pose/dataset.csv"
 file_path = "output_test.csv"
 
 
