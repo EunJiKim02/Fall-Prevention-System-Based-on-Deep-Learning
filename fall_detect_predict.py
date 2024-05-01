@@ -9,12 +9,11 @@ warnings.filterwarnings("ignore")
 
 
 """
-용도: 정상 행동과 낙상 위험 행동 분류 모델 평가
+용도: 정상 행동과 낙상 위험 행동 분류 모델 predict
 
 코드실행 결과
-./fall_detect_model 폴더에 저장된 모델을 이용하여 정상 행동과 낙상 위험 행동에 대한 분류 진행
-결과 값을 csv파일로 저장 
-(저장 경로: ./result/)
+./checkpoint 폴더에 저장된 모델과 ./data/output.csv의 데이터셋을 이용하여 
+정상 행동과 낙상 위험 행동에 대한 분류 후 결과 값을 ./result.csv파일로 저장 
 
 """
 
