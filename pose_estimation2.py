@@ -90,6 +90,7 @@ def main():
     ]
     kepoints_df = pd.DataFrame(columns=header)
     df_index = 0
+
     for folder_name in folder_list:
         classname = folder_name
         img_list = os.listdir(os.path.join(root_path, folder_name))
@@ -105,10 +106,9 @@ def main():
             df_rows = get_df_row(height, width, allkeypoints, mode, classname, img)
             # print(df_rows)
             for row in df_rows:
-                # kepoints_df.append(row)
                 kepoints_df.loc[df_index] = row
                 df_index += 1
-        # print(output)
+
     kepoints_df.to_csv(f"./data/{mode}/pose/output.csv", index=False)
 
 
