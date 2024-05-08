@@ -6,7 +6,7 @@ from lang_sam import LangSAM
 import numpy as np
 import os
 import pandas as pd
-from openpose.src import util
+from openpose.src import util2
 from openpose.src.body import Body
 import copy
 from sklearn.metrics import accuracy_score, recall_score, f1_score
@@ -35,15 +35,16 @@ def crop_image(image, boxes):
         x_max_crop = int(min(x_max + x_range, img_x))
         y_min_crop = int(max(0, y_min - y_range))
         y_max_crop = int(min(y_max + y_range, img_y))
-        print(x_min_crop, y_min_crop, x_max_crop, y_max_crop)
+        # print(x_min_crop, y_min_crop, x_max_crop, y_max_crop)
         crop_image = image.crop((x_min_crop, y_min_crop, x_max_crop, y_max_crop))
 
         return crop_image
 
 
-def data_preprocessing(model, text_prompt, img_path):
+def bed_detection(model, img_path):
 
     cropped_img = None
+    text_prompt = "bed"
     image_pil = Image.open(img_path).convert("RGB")
     masks, boxes, phrases, logits = model.predict(image_pil, text_prompt)
 
@@ -59,16 +60,83 @@ def data_preprocessing(model, text_prompt, img_path):
     return open_cv_image
 
 
+def get_df_row(height, width, allkeypoints):
+    df_rows = []
+    for personID, keypoints in allkeypoints.items():
+        row = []
+
+        for x, y in keypoints:
+            if x != -1:
+                x = np.floor((x / width) * 10000) / 10000
+            if y != -1:
+                y = np.floor((y / height) * 10000) / 10000
+            row.append(x)
+            row.append(y)
+
+        df_rows.append(row)
+
+    return df_rows
+
+
 def pose_estimation(cropped_img):
     body_estimation = Body("openpose/model/body_pose_model.pth")
+    header = [
+        "Img",
+        "NoseX",
+        "NoseY",
+        "NeckX",
+        "NeckY",
+        "RShoulderX",
+        "RShoulderY",
+        "RElbowX",
+        "RElbowY",
+        "RWristX",
+        "RWristY",
+        "LShoulderX",
+        "LShoulderY",
+        "LElbowX",
+        "LElbowY",
+        "LWristX",
+        "LWristY",
+        "MidHipX",
+        "MidHipY",
+        "RHipX",
+        "RHipY",
+        "RKneeX",
+        "RKneeY",
+        "AnkleX",
+        "AnkleY",
+        "LHipX",
+        "LHipY",
+        "LAnkleX",
+        "LAnkleY",
+        "REyeX",
+        "REyeY",
+        "LEyeX",
+        "LEyeY",
+        "REarX",
+        "REarY",
+        "LEarX",
+        "LEarY",
+        "label",
+    ]
 
-    mode = "test"
-    risk_or_normal = ""
+    kepoints_df = pd.DataFrame(columns=header)
+    df_index = 0
+
     candidate, subset = body_estimation(cropped_img)
     canvas = copy.deepcopy(cropped_img)
-    df = util.draw_bodypose(mode, canvas, candidate, subset, mode, risk_or_normal)
+    canvas, allkeypoints = util2.keypoints_extractor(canvas, candidate, subset)
+    height = canvas.shape[0]
+    width = canvas.shape[1]
+    df_rows = get_df_row(height, width, allkeypoints)
+    # print(df_rows)
+    for row in df_rows:
+        # kepoints_df.append(row)
+        kepoints_df.loc[df_index] = row
+        df_index += 1
 
-    return df
+    return kepoints_df
 
 
 def fall_detect(pred_df, final_model):
@@ -78,54 +146,22 @@ def fall_detect(pred_df, final_model):
     return pred
 
 
-def evaluate(pred_list, gt_csvfile, save_path):
-    gt_df = pd.read_csv(gt_csvfile)
-
-    imgList = gt_df["img"].tolist()
-    gtlist = gt_df["label"].tolist()
-
-    os.makedirs(save_path, exist_ok=True)
-    save_csv_path = os.path.join(save_path, "result.csv")
-    result_df = pd.DataFrame(
-        {
-            "img": imgList,
-            "pred": pred_list,
-            "label": gtlist,
-        }
-    )
-    result_df.to_csv(save_csv_path, index=False)
-    accuracy = accuracy_score(gtlist, pred_list)
-    accuracy *= 100
-    recall = recall_score(gtlist, pred_list, average="macro")
-    recall *= 100
-    f1score = f1_score(gtlist, pred_list, average="macro")
-    f1score *= 100
-
-    print(f"Accuracy: {accuracy:.2f}%")
-    print(f"Recall: {recall:.2f}%")
-    print(f"F1 Score: {f1score:.2f}%")
-
-
 def main():
     lsam = LangSAM("vit_h")
-    text_prompt = "bed"
     test_dir = f"data/test/"
     img_pathes = [test_dir + img for img in os.listdir(test_dir)]
     model_name = ""
     model_name = model_name.split(".")[0]
     model_path = f"checkpoint/{model_name}"
     model = load_model(model_path)
-    gt_path = "data/gt.csv"
-    preds = []
 
     for test_img in img_pathes:
-        cropped_img = data_preprocessing(lsam, text_prompt, test_img)
+        cropped_img = bed_detection(lsam, test_img)
         df = pose_estimation(cropped_img)
         pred = fall_detect(df, model)
-
-        # preds.append(pred)
-
-    # evaluate(preds, gt_path, "result")
+        if pred == 1:
+            print("Fall detected")
+            # send_alarm()
 
 
 if __name__ == "__main__":
