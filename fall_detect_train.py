@@ -18,8 +18,8 @@ warnings.filterwarnings("ignore")
 """
 
 
-def fall_detect_model_train(df, path, ensemble=False, n_select=3):
-    df = df.iloc[:, 1:]
+def fall_detect_model_train(df, save_path, ensemble=False, n_select=3):
+    df = df.iloc[:, 1:]  # img_name 제외
     # print(df)
     clf = setup(
         data=df,
@@ -56,17 +56,18 @@ def fall_detect_model_train(df, path, ensemble=False, n_select=3):
 
     final_model = finalize_model(tuned_model)
 
-    if not os.path.exists(path):
-        os.makedirs(path)
-    save_model(final_model, path)
+    if not os.path.exists(save_path):
+        os.makedirs(save_path)
+    save_model(final_model, save_path)
     print()
 
 
 def main():
-    df = pd.read_csv("./data/train/pose/dataset.csv")
+    csv_file = "./data/train/pose/dataset.csv"
+    df = pd.read_csv(csv_file)
     print(df)
-    model_path = "./checkpoint/"
-    fall_detect_model_train(df, model_path, ensemble=False)
+    save_model_path = "./checkpoint/"
+    fall_detect_model_train(df, save_model_path, ensemble=False)
 
 
 if __name__ == "__main__":
