@@ -78,6 +78,39 @@ def get_df_row(height, width, allkeypoints):
     return df_rows
 
 
+def data_refine(df):
+    # 각 행의 -1의 개수를 세어 새로운 열을 만듭니다.
+    df["minus_ones_count"] = df.apply(lambda row: (row == -1).sum(), axis=1)
+
+    # -1의 개수가 적은 순으로 정렬하고 이미지 이름이 중복된 행을 제거합니다.
+    df_result = df.sort_values(by="minus_ones_count").drop_duplicates(
+        subset="Img", keep="first"
+    )
+
+    # 이미지 이름을 기준으로 정렬하고 -1의 개수 열을 제거합니다.
+    df_result.drop(columns=["minus_ones_count"], inplace=True)
+    df_result = df_result.sort_values(by="Img")
+
+    # 불필요한 열을 제거합니다.
+    df_result = df_result.drop(
+        [
+            "NoseX",
+            "NoseY",
+            "REyeX",
+            "REyeY",
+            "LEyeX",
+            "LEyeY",
+            "REarX",
+            "REarY",
+            "LEarX",
+            "LEarY",
+        ],
+        axis=1,
+    )
+
+    return df_result
+
+
 def pose_estimation(cropped_img):
     body_estimation = Body("openpose/model/body_pose_model.pth")
     header = [
@@ -136,7 +169,9 @@ def pose_estimation(cropped_img):
         kepoints_df.loc[df_index] = row
         df_index += 1
 
-    return kepoints_df
+    result_df = data_refine(kepoints_df)
+
+    return result_df
 
 
 def fall_detect(pred_df, final_model):
