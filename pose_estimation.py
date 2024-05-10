@@ -129,13 +129,14 @@ def main():
     for folder_name in folder_list:
         classname = folder_name
         img_list = os.listdir(os.path.join(root_path, folder_name))
+        
         for img in tqdm(img_list):
             img_path = os.path.join(root_path, folder_name, img)
             # print(img_path)
             oriImg = cv2.imread(img_path)
             candidate, subset = body_estimation(oriImg)
             canvas = copy.deepcopy(oriImg)
-            canvas, allkeypoints = util2.keypoints_extractor(canvas, candidate, subset)
+            canvas, allkeypoints = util.keypoints_extractor(canvas, candidate, subset)
             height = canvas.shape[0]
             width = canvas.shape[1]
             save_pose_image(canvas, classname, img, save_path)

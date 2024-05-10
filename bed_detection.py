@@ -23,11 +23,9 @@ def save_crop_image(image, boxes, logits, classname, filename, save_path):
     fig, ax = plt.subplots()
     ax.imshow(image)
     # ax.set_title("Image with Bounding Boxes")
-    print("==============>",type(image))
     ax.axis('off')
     img_x, img_y = image.size
     for i,(box, logit) in enumerate(zip(boxes, logits)):
-        confidence_score = round(logit.item(), 2) 
         x_min, y_min, x_max, y_max = box
         box_width = x_max - x_min
         box_height = y_max - y_min
