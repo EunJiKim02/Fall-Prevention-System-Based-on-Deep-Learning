@@ -159,7 +159,7 @@ def pose_estimation(cropped_img):
 
     candidate, subset = body_estimation(cropped_img)
     canvas = copy.deepcopy(cropped_img)
-    canvas, allkeypoints = util2.keypoints_extractor(canvas, candidate, subset)
+    canvas, allkeypoints = util.keypoints_extractor(canvas, candidate, subset)
     height = canvas.shape[0]
     width = canvas.shape[1]
     df_rows = get_df_row(height, width, allkeypoints)
