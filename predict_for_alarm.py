@@ -6,7 +6,7 @@ from lang_sam import LangSAM
 import numpy as np
 import os
 import pandas as pd
-from openpose.src import util2
+from openpose.src import util
 from openpose.src.body import Body
 import copy
 from sklearn.metrics import accuracy_score, recall_score, f1_score
