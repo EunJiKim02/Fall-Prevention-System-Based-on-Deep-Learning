@@ -6,7 +6,7 @@ import numpy as np
 from tqdm import tqdm
 
 from openpose.src import model
-from openpose.src import util2
+from openpose.src import util
 from openpose.src.body import Body
 
 # from openpose.src.hand import Hand
@@ -100,7 +100,7 @@ def main():
             oriImg = cv2.imread(img_path)
             candidate, subset = body_estimation(oriImg)
             canvas = copy.deepcopy(oriImg)
-            canvas, allkeypoints = util2.keypoints_extractor(canvas, candidate, subset)
+            canvas, allkeypoints = util.keypoints_extractor(canvas, candidate, subset)
             height = canvas.shape[0]
             width = canvas.shape[1]
             df_rows = get_df_row(height, width, allkeypoints, mode, classname, img)
