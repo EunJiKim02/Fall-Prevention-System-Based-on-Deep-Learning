@@ -15,7 +15,8 @@ import pandas as pd
 import os
 
 warnings.filterwarnings("ignore")
-
+def save_pose_image(canvas, classname, filename, save_path):
+    plt.imsave(f"{save_path}{classname}/{filename}", canvas[:, :, [2, 1, 0]])
 
 def get_df_row(height, width, allkeypoints, mode, classname, filename):
     name = mode + "_" + classname + "_" + filename
@@ -80,6 +81,7 @@ def main():
     body_estimation = Body("openpose/model/body_pose_model.pth")
     mode = "test"
     root_path = f"./data/{mode}/crop/"
+    save_path = f"./data/{mode}/pose/"
     folder_list = os.listdir(root_path)
     header = [
         "Img",
@@ -136,6 +138,7 @@ def main():
             canvas, allkeypoints = util2.keypoints_extractor(canvas, candidate, subset)
             height = canvas.shape[0]
             width = canvas.shape[1]
+            save_pose_image(canvas, classname, img, save_path)
             df_rows = get_df_row(height, width, allkeypoints, mode, classname, img)
             # print(df_rows)
             for row in df_rows:
@@ -143,7 +146,7 @@ def main():
                 df_index += 1
 
     result_df = data_refine(kepoints_df)
-    result_df.to_csv(f"./data/{mode}/pose/dataset.csv", index=False)
+    result_df.to_csv(save_path+"dataset.csv", index=False)
 
 
 if __name__ == "__main__":

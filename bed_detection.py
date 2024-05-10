@@ -19,15 +19,13 @@ https://github.com/IDEA-Research/GroundingDINO
 
 '''
 
-def save_crop_image(image, boxes, logits, name, mode, risk_or_normal, save_path = None):
+def save_crop_image(image, boxes, logits, classname, filename, save_path):
     fig, ax = plt.subplots()
     ax.imshow(image)
     # ax.set_title("Image with Bounding Boxes")
     print("==============>",type(image))
     ax.axis('off')
     img_x, img_y = image.size
-
-    save_path = f'./data/{mode}/crop/{risk_or_normal}/'
     for i,(box, logit) in enumerate(zip(boxes, logits)):
         confidence_score = round(logit.item(), 2) 
         x_min, y_min, x_max, y_max = box
@@ -46,7 +44,7 @@ def save_crop_image(image, boxes, logits, name, mode, risk_or_normal, save_path 
         print(x_min_crop,y_min_crop,x_max_crop,y_max_crop)
         crop_image = image.crop((x_min_crop,y_min_crop,x_max_crop,y_max_crop))
         #crop_image = crop_image.resize((512, 512))
-        crop_image.save(f"{save_path}{i}_{name}","JPEG")
+        crop_image.save(f"{save_path}{classname}/{filename}","JPEG")
 
 
 def get_image_size(image_path):
@@ -59,23 +57,17 @@ def main():
     text_prompt = "bed"
     mode='train'
     root_path = f'./data/{mode}/origin/'
+    save_path = f'./data/{mode}/crop/'
     #normal, risk folder 이름 저장
-    folder_names = os.listdir(root_path)
+    folder_list = os.listdir(root_path)
     #folder_names.remove('.DS_Store')
-    print(folder_names)
 
-    for folder_name in folder_names:
-        print(folder_name)
-        # if folder_name == 'risk':
-        #     continue
-        folder_path = os.path.join(root_path, folder_name)
-        print(folder_name)
-        img_list=os.listdir(folder_path)
-        risk_or_normal=folder_name
+    for folder_name in folder_list:
+        classname=folder_name
+        img_list = os.listdir(os.path.join(root_path, folder_name))
         
-        for img_name in tqdm(img_list):
-            img_path=os.path.join(folder_path, img_name)
-            # width, height = get_image_size(img_path)
+        for img in tqdm(img_list):
+            img_path = os.path.join(root_path, folder_name, img)
             image_pil = Image.open(img_path).convert("RGB")
             masks, boxes, phrases, logits = model.predict(image_pil, text_prompt)
 
@@ -84,7 +76,7 @@ def main():
             else:
 
                 # Display the image with bounding boxes and confidence scores
-                save_crop_image(image_pil, boxes, logits, img_name, mode, risk_or_normal)
+                save_crop_image(image_pil, boxes, logits, mode, classname, img, save_path)
 
 
 if __name__ == "__main__":
