@@ -6,9 +6,10 @@ import pandas as pd
 코드실행 결과 : 상관행렬 값이 csv 파일로 저장
 '''
 
-
+mode = "test"
+root_path = f"./data/{mode}/pose/"
 # CSV 파일 경로 설정
-file_path = "output_test.csv"
+file_path = root_path + "dataset.csv"
 
 
 # 데이터 읽기
@@ -23,7 +24,7 @@ print("Correlation Matrix:")
 print(correlation_matrix["label"])
 
 # 상관관계 csv 파일로 저장
-correlation_matrix.to_csv("./correlation_matrix.csv")
+correlation_matrix.to_csv(root_path+"correlation_matrix.csv")
 [
     "Img",
     "NoseX",
