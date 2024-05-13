@@ -125,7 +125,7 @@ def main():
         "label",
     ]
     kepoints_df = pd.DataFrame(columns=header)
-    df_index = 0
+    rows_list = []
 
     for folder_name in folder_list:
         classname = folder_name
@@ -144,9 +144,9 @@ def main():
             df_rows = get_df_row(height, width, allkeypoints, mode, classname, img)
             # print(df_rows)
             for row in df_rows:
-                kepoints_df.loc[df_index] = row
-                df_index += 1
+                rows_list.append(row)
 
+    kepoints_df = pd.concat([kepoints_df, pd.DataFrame(rows_list)], ignore_index=True)
     result_df = data_refine(kepoints_df)
     result_df.to_csv(save_path + "dataset.csv", index=False)
 

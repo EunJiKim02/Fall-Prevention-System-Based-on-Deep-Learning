@@ -156,19 +156,19 @@ def pose_estimation(cropped_img):
     ]
 
     kepoints_df = pd.DataFrame(columns=header)
-    df_index = 0
+    rows_list = []
 
     candidate, subset = body_estimation(cropped_img)
     canvas = copy.deepcopy(cropped_img)
     canvas, allkeypoints = util.keypoints_extractor(canvas, candidate, subset)
     height = canvas.shape[0]
     width = canvas.shape[1]
+
     df_rows = get_df_row(height, width, allkeypoints)
-    # print(df_rows)
     for row in df_rows:
-        # kepoints_df.append(row)
-        kepoints_df.loc[df_index] = row
-        df_index += 1
+        rows_list.append(row)
+
+    kepoints_df = pd.concat([kepoints_df, pd.DataFrame(rows_list)], ignore_index=True)
 
     result_df = data_refine(kepoints_df)
 
