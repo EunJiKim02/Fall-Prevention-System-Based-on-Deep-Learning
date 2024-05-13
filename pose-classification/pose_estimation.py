@@ -146,7 +146,17 @@ def main():
             for row in df_rows:
                 rows_list.append(row)
 
-    kepoints_df = pd.concat([kepoints_df, pd.DataFrame(rows_list)], ignore_index=True)
+            if len(rows_list) > 100:
+                kepoints_df = pd.concat(
+                    [kepoints_df, pd.DataFrame(rows_list, columns=header)],
+                    ignore_index=True,
+                )
+                rows_list = []
+
+    if rows_list:  # 마지막에 남은 데이터가 있다면 이를 처리
+        kepoints_df = pd.concat(
+            [kepoints_df, pd.DataFrame(rows_list, columns=header)], ignore_index=True
+        )
     result_df = data_refine(kepoints_df)
     result_df.to_csv(save_path + "dataset.csv", index=False)
 
