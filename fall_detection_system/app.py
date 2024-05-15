@@ -1,8 +1,8 @@
-from flask import Flask
+from fastapi import FastAPI
 from fall_detection_system.routes.routes import main_bp
 
 def create_app():
-    app = Flask(__name__)
-    app.register_blueprint(main_bp, url_prefix='/')
+    app = FastAPI()
+    app.include_router(main_bp, prefix='')
 
     return app

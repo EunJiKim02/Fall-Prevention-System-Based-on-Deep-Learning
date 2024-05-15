@@ -1,8 +1,11 @@
-from flask import render_template, request, redirect, url_for, Blueprint
+from fastapi import FastAPI, Request, APIRouter
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 
+templates = Jinja2Templates(directory="fall_detection_system/templates")
 
-main_bp = Blueprint('index', __name__)
+main_bp = APIRouter()
 
-@main_bp.route('/')
-def index():
-    return render_template('index.html')
+@main_bp.get("/", response_class=HTMLResponse)
+async def index(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
