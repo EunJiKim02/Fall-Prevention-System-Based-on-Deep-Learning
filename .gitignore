@@ -22,3 +22,6 @@ data_name.py
 source/
 source_1/
 *.gitignore
+
+fall-prevention-frontend-react/
+
