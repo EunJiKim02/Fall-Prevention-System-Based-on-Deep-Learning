@@ -16,7 +16,9 @@ videos/
 test.py
 **/__pycache__
 
+# etc
 data_name.py
 *.zip
 source/
 source_1/
+*.gitignore

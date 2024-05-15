@@ -8,7 +8,7 @@
 
 
 
-![image](https://github.com/EunJiKim02/Fall-Prevention-System-Based-on-Deep-Learning/assets/87495422/5d592ed6-4a86-4bcc-9ab6-e4ee819f5e9d)
+![image](https://github.com/EunJiKim02/Fall-Prevention-System-Based-on-Deep-Learning/assets/100736860/09b5eef4-e92e-42f8-a92d-6046cab02f93)
 
 
 ### dataset
@@ -32,7 +32,7 @@ https://drive.google.com/drive/folders/1NCKVH2z7ljYXVJDb2eQDjhm2fmP9RDzY?usp=sha
   gdown https://drive.google.com/uc?id=1EULkcH_hhSU28qVc1jSJpCh2hGOrzpjK -O ./openpose/model/body_pose_model.pth
   ```
 
-- segmentation
+- detection
 
   ``` bash
   python bed_seg_detection.py
@@ -45,10 +45,15 @@ https://drive.google.com/drive/folders/1NCKVH2z7ljYXVJDb2eQDjhm2fmP9RDzY?usp=sha
   ```
 
 - classification
-
+  train
   ``` bash
   python fall_detect_train.py
   ```
+  test
+  ``` bash
+  python fall_detect_train.py
+  ```
+
 
 
 
