@@ -201,7 +201,6 @@ def main():
         df = pose_estimation(cropped_img)
         pred = fall_detect(df, model)
         if pred == 1:
-            print("Fall detected")
             # send_alarm()
 
 
