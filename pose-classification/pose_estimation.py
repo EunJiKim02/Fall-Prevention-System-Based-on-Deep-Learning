@@ -14,6 +14,15 @@ import os
 
 warnings.filterwarnings("ignore")
 
+"""
+용도 : 키포인트 좌표값 pose estimation
+
+코드실행 결과
+./data/{mode}/pose/ 폴더의 이미지를 이용하여
+키포인트 좌표값을 추출하여 결과값을 ./data/{mode}/pose/dataset.csv 파일로 저장 
+
+"""
+
 
 def save_pose_image(canvas, classname, filename, save_path):
     plt.imsave(f"{save_path}{classname}/{filename}", canvas[:, :, [2, 1, 0]])
