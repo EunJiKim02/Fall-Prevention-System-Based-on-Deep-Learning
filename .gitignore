@@ -13,6 +13,7 @@ videos/
 *.csv
 *.log
 *.prototxt
+config.py
 test.py
 **/__pycache__
 
