@@ -1,5 +1,13 @@
 import pandas as pd
 
+"""
+용도 : 레이블 삭제
+
+코드실행 결과 : ./data/output.csv의 데이터셋을 이용하여 
+키포인트와 상관관계가 없는 레이블 삭제 후 ./data/output_refined.csv 파일로 저장
+
+"""
+
 path = "data/output.csv"
 df = pd.read_csv(path)
 
