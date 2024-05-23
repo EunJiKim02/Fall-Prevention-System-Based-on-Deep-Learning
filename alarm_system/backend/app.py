@@ -1,5 +1,5 @@
 from flask import Flask
-from fall_detection_system.routes.main_routes import main_bp
+from alarm_system.backend.routes.main_routes import main_bp
 
 def create_app():
     app = Flask(__name__)
