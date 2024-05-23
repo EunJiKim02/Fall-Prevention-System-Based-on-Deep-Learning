@@ -5,26 +5,23 @@ import pandas as pd
 
 코드실행 결과 : ./data/{mode}/pose/dataset.csv의 데이터셋을 이용하여
 계산한 상관행렬 값이 ./data/{mode}/pose/correlation.csv 파일로 저장
+
 """
 
 mode = "test"
 root_path = f"./data/{mode}/pose/"
-# CSV 파일 경로 설정
 file_path = root_path + "dataset.csv"
 
 
-# 데이터 읽기
 df = pd.read_csv(file_path)
 df = df.drop("Img", axis=1)
 
 
-# 상관 계수 계산
 correlation_matrix = df.corr()
-# correlation_matrix
+
 print("Correlation Matrix:")
 print(correlation_matrix["label"])
 
-# 상관관계 csv 파일로 저장
 correlation_matrix.to_csv(root_path+"correlation_matrix.csv")
 [
     "Img",
