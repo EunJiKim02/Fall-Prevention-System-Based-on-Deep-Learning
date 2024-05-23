@@ -1,5 +1,5 @@
 from flask import render_template, request, redirect, url_for, Blueprint, session
-from fall_detection_system.database.db import Mysqldb
+from alarm_system.backend.database.db import Mysqldb
 
 from config import SECRET_KEY
 
