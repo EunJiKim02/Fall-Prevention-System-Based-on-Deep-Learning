@@ -11,15 +11,15 @@ export default function Login() {
   const navigate = useNavigate();
   const handleLogin = () => {
     //ex. 서버로 아이디 비밀번호 보내기
-    /*
+
     let isLoginAuthorzied = 0;
-    axios.post('/auth/login', { id, password }).then((res) => {
+    axios.post('/login/request', { id, password }).then((res) => {
       console.log(res.data);
       isLoginAuthorzied = 1;
     });
     if (!isLoginAuthorzied)
       return;
-    */
+
     navigate('/patients');
   }
 
