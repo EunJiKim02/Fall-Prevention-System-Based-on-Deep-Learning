@@ -3,7 +3,8 @@ import pandas as pd
 """
 용도 : 레이블과 키포인트 간의 상관행렬 분석
 
-코드실행 결과 : 상관행렬 값이 csv 파일로 저장
+코드실행 결과 : ./data/{mode}/pose/dataset.csv의 데이터셋을 이용하여
+계산한 상관행렬 값이 ./data/{mode}/pose/correlation.csv 파일로 저장
 """
 
 mode = "test"
