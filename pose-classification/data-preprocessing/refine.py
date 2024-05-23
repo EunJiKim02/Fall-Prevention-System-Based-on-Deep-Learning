@@ -8,8 +8,11 @@ import pandas as pd
 
 """
 
-path = "data/output.csv"
-df = pd.read_csv(path)
+mode = "test"
+root_path = f"./data/{mode}/pose/"
+file_path = root_path + "dataset.csv"
+
+df = pd.read_csv(file_path)
 
 df["minus_ones_count"] = df.apply(lambda row: (row == -1).sum(), axis=1)
 
@@ -37,4 +40,4 @@ df_result = df_result.drop(
 )
 
 
-df_result.to_csv("data/output_refined.csv", index=False)
+df_result.to_csv(root_path+"output_refined.csv", index=False)
