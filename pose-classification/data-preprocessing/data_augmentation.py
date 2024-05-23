@@ -6,7 +6,8 @@ from tqdm import tqdm
 '''
 용도 : 데이터 증대
 
-코드실행 결과 : origin 폴더의 이미지를 랜덤으로 회전시켜 augmentation 폴더에 저장
+코드실행 결과 : ./data/{mode}/origin의 이미지를 랜덤으로 회전시켜 
+./data{mode}/augmentation 폴더에 저장
 
 '''
 
