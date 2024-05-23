@@ -1,16 +1,23 @@
-from flask import render_template, request, redirect, url_for, Blueprint, session
+from flask import render_template, request, redirect, url_for, Blueprint, session, jsonify
 from alarm_system.backend.database.db import Mysqldb
-
+from flask_cors import CORS
 from config import SECRET_KEY
 
 main_bp = Blueprint('main', __name__)
-
 
 mysql = Mysqldb()
 
 @main_bp.route('/')
 def index():
-    return render_template('index.html')
+    return jsonify(
+        {
+            "users": [
+                "a",
+                "b",
+                "c"
+            ]
+        }
+    )
 
 @main_bp.route('/signup')
 def signup():
@@ -31,6 +38,10 @@ def signup_request():
     else:
         return "invalid access"
     
+
+@main_bp.route('/patients')
+def patients():
+    return 'data'
 
 @main_bp.route('/login')
 def login():
