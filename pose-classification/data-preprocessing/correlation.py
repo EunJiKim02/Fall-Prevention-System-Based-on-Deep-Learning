@@ -1,10 +1,10 @@
 import pandas as pd
 
-'''
+"""
 용도 : 레이블과 키포인트 간의 상관행렬 분석
 
 코드실행 결과 : 상관행렬 값이 csv 파일로 저장
-'''
+"""
 
 mode = "test"
 root_path = f"./data/{mode}/pose/"
