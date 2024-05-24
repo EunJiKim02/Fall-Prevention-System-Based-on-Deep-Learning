@@ -24,7 +24,7 @@ class Mysqldb:
     
     def selectall(self, query): # 모든 정보 선택
         self.cursor.execute(query)
-        return self.cursor.fetchmany()
+        return self.cursor.fetchall()
     
     # --------------------------------------
 
