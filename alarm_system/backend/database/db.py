@@ -69,4 +69,5 @@ class Mysqldb:
         self.cursor.execute(query)
         result = self.cursor.fetchone()
         return result[0] > 0
+
     
