@@ -15,6 +15,11 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
+"""
+용도: 침대 영역 detection, 키포인트 좌표값 pose estimation, 정상 행동과 낙상 위험 행동 분류 모델 train
+
+"""
+
 
 def crop_image(image, boxes):
     fig, ax = plt.subplots()
@@ -196,7 +201,6 @@ def main():
         df = pose_estimation(cropped_img)
         pred = fall_detect(df, model)
         if pred == 1:
-            print("Fall detected")
             # send_alarm()
 
 

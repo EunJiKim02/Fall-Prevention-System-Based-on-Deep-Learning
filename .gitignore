@@ -5,6 +5,8 @@ Shiddenlayer/
 .idea/
 .ipynb_checkpoints/
 videos/
+alarm_system/frontend/node_modules/
+alarm_system/frontend/vite-project/
 
 # file
 *.pth
@@ -13,6 +15,8 @@ videos/
 *.csv
 *.log
 *.prototxt
+package-lock.json
+config.py
 test.py
 **/__pycache__
 
@@ -22,3 +26,6 @@ data_name.py
 source/
 source_1/
 *.gitignore
+
+fall-prevention-frontend-react/
+

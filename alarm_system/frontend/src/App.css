@@ -1,0 +1,116 @@
+#root {
+  /* max-width: 1280px; */
+  margin: 0 auto;
+  padding-block: 6em;
+  text-align: center;
+}
+
+.card {
+  display:flex;
+  /* flex-direction: column; */
+  align-items: center;
+  justify-content: center;
+  padding-inline: 2em;
+  padding-block: 1em;
+  background-color: #e3edf8;
+  border-radius: 25px;
+  width: 35em;
+  height: 28em;
+  box-shadow: 1px 1px 10px #bdbfc0;
+  .mainlogo{
+    width: 120px;
+    margin-bottom: 1em;
+  }
+  .login-btn{
+    margin-top: 1em;
+    width: 300px;
+  }
+}
+
+.patients{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  .patient{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #e3edf8;
+    box-shadow: 1px 1px 10px #bdbfc0;
+    padding-block: 1em;
+    padding-inline: 3em;
+    margin-inline: 1em;
+    margin-block: 1em;
+    border-radius: 25px;
+    width:20em;
+    height: 22em;
+    /* box-shadow: 0 1px 10px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1); */
+  }
+  /* .patient:hover {
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  } */
+}
+
+
+.warning{
+  position:fixed;
+  z-index:10;
+  left: 50%;
+  transform: translate(-50%, 0);
+  bottom:20%;
+  border-radius: 50px;
+  width: 800px;
+  height: 500px;
+  background-color: #d08f8f;
+  box-shadow: 1px 1px 10px #ababab;
+
+  h1{
+    margin: 0.5em;
+  }
+
+  /* 텍스트 중앙정렬 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* .warning-list {
+  position: fixed;
+  z-index: 10;
+  left: 50%;
+  transform: translate(-50%, 0);
+  bottom: 20%;
+  border-radius: 50px;
+  width: 800px;
+  height: 500px;
+  background-color: #e3edf8;
+  box-shadow: 1px 1px 10px #bdbfc0;
+
+  h1 {
+    margin: 0.5em;
+  }
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+} */
+
+.warning-table{
+  /* position: fixed; */
+  width: 800px;
+  height: 500px;
+  background-color: #e3edf8;
+  box-shadow: 1px 1px 10px #bdbfc0;
+  padding:2em;
+  border-radius: 25px;
+}
+.warning-title{
+  margin-bottom: 0.5em;
+}
