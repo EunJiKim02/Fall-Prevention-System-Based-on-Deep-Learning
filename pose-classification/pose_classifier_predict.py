@@ -12,7 +12,7 @@ warnings.filterwarnings("ignore")
 용도: 정상 행동과 낙상 위험 행동 분류 모델 predict
 
 코드실행 결과
-./checkpoint 폴더에 저장된 모델과 ./data/output.csv의 데이터셋을 이용하여 
+./checkpoint 폴더에 저장된 모델과 ./data/{mode}/pose/dataset.csv의 데이터셋을 이용하여 
 정상 행동과 낙상 위험 행동에 대한 분류 후 결과 값을 ./result.csv 파일로 저장 
 
 """
