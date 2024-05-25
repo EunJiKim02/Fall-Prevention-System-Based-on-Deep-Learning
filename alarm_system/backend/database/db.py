@@ -1,14 +1,11 @@
 import pymysql
 from config import db_config
 
-
-
 # database object
 class Mysqldb:
     def __init__(self):
         self.conn = pymysql.connect(**db_config)
         self.cursor = self.conn.cursor()
-
 
     # --------- 기본 database 함수 -----------
     
@@ -20,11 +17,11 @@ class Mysqldb:
     
     def select(self, query, size): # size 개수만큼 row 선택
         self.cursor.execute(query)
-        return self.cursor.fetchone(size)
+        return self.cursor.fetchmany(size)
     
     def selectall(self, query): # 모든 정보 선택
         self.cursor.execute(query)
-        return self.cursor.fetchmany()
+        return self.cursor.fetchall()
     
     # --------------------------------------
 
@@ -72,3 +69,5 @@ class Mysqldb:
         self.cursor.execute(query)
         result = self.cursor.fetchone()
         return result[0] > 0
+
+    
