@@ -15,10 +15,10 @@ alarm_system/frontend/vite-project/
 *.csv
 *.log
 *.prototxt
-package-lock.json
 config.py
 test.py
 **/__pycache__
+package-lock.json
 
 # etc
 data_name.py
