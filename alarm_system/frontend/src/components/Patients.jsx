@@ -15,7 +15,7 @@ export default function Patients() {
     try {
       const response = await axios.get("http://localhost:5000/patients");
       console.log(response.data);
-      setPatients(response.data.data);
+      setPatients(response.data.patients);
     } catch (error) {
       console.error('Error fetching patients:', error);
     }

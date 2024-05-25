@@ -1,7 +1,6 @@
 from flask import render_template, request, redirect, url_for, Blueprint, session, jsonify
 from alarm_system.backend.database.db import Mysqldb
-from flask_cors import CORS
-from config import SECRET_KEY
+
 
 main_bp = Blueprint('main', __name__)
 
@@ -9,6 +8,7 @@ mysql = Mysqldb()
 
 @main_bp.route('/')
 def index():
+
     return jsonify(
         {
             "users": [
@@ -44,11 +44,7 @@ def patients():
     # 환자 데이터를 불러와서 json 파일로 전송
     info = mysql.selectall("select * from PATIENT")
     print(info)
-    return jsonify(
-        {
-            "data": info
-        }
-    )
+    return jsonify({"patients": info})
 
 @main_bp.route('/login')
 def login():
