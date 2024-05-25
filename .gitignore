@@ -18,6 +18,7 @@ alarm_system/frontend/vite-project/
 config.py
 test.py
 **/__pycache__
+package-lock.json
 
 # etc
 data_name.py
