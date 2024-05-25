@@ -3,6 +3,7 @@ import axios from "axios";
 import img from '../assets/patient_img.png';
 import Header from "./Header";
 import Warning from "./Warning";
+import { io } from "socket.io-client";
 
 axios.defaults.withCredentials = true;
 
@@ -23,6 +24,20 @@ export default function Patients() {
 
   useEffect(() => {
     fetchAPI();
+  }, []);
+
+  useEffect(() => {
+    const socket = io("http://localhost:5000");
+
+    socket.on('warning', (data) => {
+      console.log('Warning received:', data);
+      setWarningInfo({ warningText: "경고", detail: `환자 ID ${data.patient_id}: ${data.message}` });
+      setIsWarning(true);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
   const renderPatients = patients.length > 0 && patients.map((p) => {
