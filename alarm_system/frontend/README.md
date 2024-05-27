@@ -13,8 +13,13 @@ Currently, two official plugins are available:
 
 https://nodejs.org/ko/download/
 
-2. 프로젝트 실행
+2. 프로젝트 설정
+```
+npm install
+npm i vite
+```
+
+3. 프로젝트 실행
 ```
 npm run dev
-
 ```
