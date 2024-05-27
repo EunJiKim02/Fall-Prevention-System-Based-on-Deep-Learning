@@ -15,8 +15,10 @@ CREATE TABLE PATIENT(
     name VARCHAR(256) NOT NULL,
     loc VARCHAR(256) NOT NULL,
     nurse VARCHAR(256),
+    significant VARCHAR(512),
     pic_url VARCHAR(256),
     current_status BOOLEAN,
     PRIMARY key (id)
 ) CHARSET=UTF8;
 
+commit;
