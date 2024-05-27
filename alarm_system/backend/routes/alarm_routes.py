@@ -4,7 +4,6 @@ from alarm_system.backend.database.db import Mysqldb
 from flask_socketio import SocketIO, emit
 import time
 
-
 alarm_route = Blueprint('alarm', __name__)
 
 def monitor_patients(socketio):
