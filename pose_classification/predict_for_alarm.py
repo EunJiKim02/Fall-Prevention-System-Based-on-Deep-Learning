@@ -62,7 +62,7 @@ def bed_detection(model, img_path = None, img = None):
         return None
     else:
         cropped_img = crop_image(image_pil, boxes)
-        # cropped_img.save("./output/bed/check.jpg")
+        cropped_img.save("./output/bed/check.jpg")
 
         # Convert PIL image to OpenCV image
         open_cv_image = np.array(cropped_img)
@@ -165,7 +165,7 @@ def pose_estimation(cropped_img):
         "label",
     ]
 
-    kepoints_df = pd.DataFrame(columns=header)
+    keypoints_df = pd.DataFrame(columns=header)
     rows_list = []
 
     candidate, subset = body_estimation(cropped_img)
@@ -175,13 +175,14 @@ def pose_estimation(cropped_img):
     width = canvas.shape[1]
 
     df_rows = get_df_row(height, width, allkeypoints)
+
     for row in df_rows:
+        row = ['real-time_img'] + list(row)
+        row.append(-1)
         rows_list.append(row)
 
-    kepoints_df = pd.concat([kepoints_df, pd.DataFrame(rows_list)], ignore_index=True)
-
-    result_df = data_refine(kepoints_df)
-
+    keypoints_df = pd.concat([keypoints_df, pd.DataFrame(rows_list, columns=header)], ignore_index=True)
+    result_df = data_refine(keypoints_df)
     return result_df
 
 
@@ -199,16 +200,16 @@ class realtime_fall_predictor:
         self.model = load_model(self.model_path)
         
     def realtime_predict(self, image):
-        cropped_img = bed_detection(self.lsam, img=image)
-        print("bed detection")
-        if cropped_img is None:
-            return False
-        df = pose_estimation(cropped_img)
-        print("pose estimation")
+        # cropped_img = bed_detection(self.lsam, img=image)
+        # #print("bed detection")
+        # if cropped_img is None:
+        #     return False
+        df = pose_estimation(image)
+        #print("pose estimation")
         if df.empty:
             return False
         pred = fall_detect(df, self.model)
-        print("fall_detect")
+        #print("fall_detect")
         if pred == 1:
             return True
         return False

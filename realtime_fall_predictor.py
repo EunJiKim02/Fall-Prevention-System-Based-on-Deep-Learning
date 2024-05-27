@@ -2,10 +2,10 @@ import cv2
 import time
 from pose_classification.predict_for_alarm import realtime_fall_predictor
 
-#cap = cv2.VideoCapture('test.mp4')
-cap = cv2.VideoCapture('http://192.168.0.10:7000/video')
+cap = cv2.VideoCapture('test.mp4')
+#cap = cv2.VideoCapture('http://192.168.0.10:7000/video')
 
-frame_interval = 1 / 15.0
+frame_interval = 5
 
 last_time = time.time()
 
