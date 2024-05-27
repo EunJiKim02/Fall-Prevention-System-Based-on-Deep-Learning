@@ -7,6 +7,7 @@ Shiddenlayer/
 videos/
 alarm_system/frontend/node_modules/
 alarm_system/frontend/vite-project/
+alarm_system/frontend/package-lock.json
 
 # file
 *.pth
@@ -18,7 +19,7 @@ alarm_system/frontend/vite-project/
 config.py
 test.py
 **/__pycache__
-package-lock.json
+
 
 # etc
 data_name.py
