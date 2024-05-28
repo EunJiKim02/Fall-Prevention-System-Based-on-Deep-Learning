@@ -3,7 +3,7 @@ import './App.css'
 import Login from './components/Login'
 import Footer from './components/Footer'
 import Patients from './components/Patients'
-import WarningList from './components/WarningList'
+import Paddition from './components/Paddition'
 import axios from 'axios'
 import { useEffect } from 'react'
 
@@ -25,7 +25,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Login />} />
         <Route path='/patients' element={<Patients />} />
-        <Route path='/warninglist' element={<WarningList />} />
+        <Route path='/paddition' element={<Paddition />} />
       </Routes>
       <Footer/>
     </>
