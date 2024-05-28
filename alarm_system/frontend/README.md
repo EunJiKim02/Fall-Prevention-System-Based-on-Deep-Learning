@@ -14,9 +14,12 @@ Currently, two official plugins are available:
 https://nodejs.org/ko/download/
 
 2. 프로젝트 설정
+
 ```
 npm install
 npm i vite
+# 소켓 사용할 때 필요한 라이브러리 설치
+npm i socket.io-client
 ```
 
 3. 프로젝트 실행
