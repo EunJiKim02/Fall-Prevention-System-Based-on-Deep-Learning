@@ -1,5 +1,6 @@
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-style: normal;
   line-height: 1.5;
   font-weight: 400;
 
@@ -7,10 +8,13 @@
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
 
-  font-synthesis: none;
+  /* font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -moz-osx-font-smoothing: grayscale; */
+}
+* {
+  font-family: "Noto Sans KR", sans-serif;
 }
 
 a {
@@ -73,6 +77,12 @@ input{
   border: 0.1px solid #ccc;
 }
 
+.input-radio{
+  height:20px;
+  width:20px;
+  margin-inline: 1em;
+}
+
 header{
   background-color: #f0f3fa;
   position:fixed;
@@ -105,10 +115,10 @@ header{
 }
 
 footer {
-  position:absolute;
+  position:fixed;
   left:0;
   right:0;
-  bottom: -1;
+  bottom: 0;
   color: #888;
 }
 
