@@ -14,6 +14,7 @@ Currently, two official plugins are available:
 https://nodejs.org/ko/download/
 
 2. 프로젝트 설정
+   
 fronted폴더(리액트)에 package.json이 있어야 함.
 
 ```
