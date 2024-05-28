@@ -200,10 +200,10 @@ class realtime_fall_predictor:
         self.model = load_model(self.model_path)
         
     def realtime_predict(self, image):
-        # cropped_img = bed_detection(self.lsam, img=image)
-        # #print("bed detection")
-        # if cropped_img is None:
-        #     return False
+        cropped_img = bed_detection(self.lsam, img=image)
+        #print("bed detection")
+        if cropped_img is None:
+            return False
         df = pose_estimation(image)
         #print("pose estimation")
         if df.empty:
