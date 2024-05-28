@@ -14,7 +14,8 @@ sudo apt install mysql-server
 ## Database Setting
 
 1. config.py
-  Fall-Prevention-System-Based-on-Deep-Learning/config.py 생성 후 아래 내용 입력
+
+Fall-Prevention-System-Based-on-Deep-Learning/config.py 생성 후 아래 내용 입력
 
 ```python
 db_config = {
