@@ -10,9 +10,9 @@ export default function Header() {
       <nav>
         <img className='header-mainlogo' src={mainLogo}></img>
         <ul>
-          <li><Link to='/'>{location.pathname === '/' ? '로그인' : '로그아웃'}</Link></li>
           <li><Link to='/patients'>환자 정보</Link></li>
-          <li><Link to='/warninglist'>알람 목록</Link></li>
+          <li><Link to='/paddition'>환자 추가</Link></li>
+          <li><Link to='/'>{location.pathname === '/' ? '로그인' : '로그아웃'}</Link></li>
         </ul>
       </nav>
       </header>

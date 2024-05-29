@@ -78,7 +78,7 @@ def main():
                 )
             else:
 
-                # Display the image with bounding boxes and confidence scores
+                # 이미지를 잘라서 저장
                 save_crop_image(
                     image_pil, boxes, logits, mode, classname, img, save_path
                 )
