@@ -17,7 +17,7 @@ npm run dev
 Fall-Prevention-System-Based-on-Deep-Learning/ 에서 아래 명령 실행
 
 ```
-python server.py
+python alarm_system/server.py
 ```
 
 
@@ -27,5 +27,5 @@ python server.py
 Fall-Prevention-System-Based-on-Deep-Learning/ 에서 아래 명령 실행
 
 ```
-python realtime_fall_predictor.py
+python alarm_system/realtime_fall_predictor.py
 ```
