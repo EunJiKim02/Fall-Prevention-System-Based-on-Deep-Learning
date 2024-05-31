@@ -3,7 +3,7 @@ monkey.patch_all()
 
 from flask import Flask
 from flask_socketio import SocketIO
-from alarm_system.backend.routes.main_routes import main_bp
+from backend.routes.main_routes import main_bp
 from flask_cors import CORS
 
 
