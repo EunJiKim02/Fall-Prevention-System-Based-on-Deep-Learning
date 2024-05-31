@@ -1,33 +1,51 @@
 import cv2
 import time
 from ai.predict_for_alarm import realtime_fall_predictor
+from backend.database.db import Mysqldb, Patient
 
-cap = cv2.VideoCapture("test.mp4")
-# cap = cv2.VideoCapture('http://192.168.0.10:7000/video')
+def realtime_predictor(source=0, frame_interval=10, id = None):
 
-frame_interval = 5
+    user = Patient()
+    user.setinfo(id)
 
-last_time = time.time()
+    if id is None:
+        print("Bed is not selected!")
+        return
 
-fp = realtime_fall_predictor()
+    cap = cv2.VideoCapture(source)
+    last_time = time.time()
 
-print("real-time predictor start")
-while True:
-    ret, frame = cap.read()
-    if not ret:
-        print("Failed to grab frame")
-        break
-    current_time = time.time()
-    if current_time - last_time >= frame_interval:
-        is_fall_detected = fp.realtime_predict(frame)
-        if is_fall_detected:
-            print("Fall detected!")
-        last_time = current_time
+    fp = realtime_fall_predictor()
 
-    cv2.imshow("Webcam Stream", frame)
+    print("real-time predictor start")
+    while True:
 
-    if cv2.waitKey(1) & 0xFF == ord("q"):
-        break
+        ret, frame = cap.read()
+        if not ret:
+            print("Failed to grab frame")
+            break
+        current_time = time.time()
+        if current_time - last_time >= frame_interval:
+            is_fall_detected = fp.realtime_predict(frame)
+            if is_fall_detected:
+                print("Fall detected!")
+                user.changestatus(True)
+            last_time = current_time
 
-cap.release()
-cv2.destroyAllWindows()
+        cv2.imshow('Webcam Stream', frame)
+
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+
+def main():
+    bedid = int(input('현재 찍고 있는 침대 번호를 지정해주세요.'))
+    #src = 'http://192.168.0.10:7000/video'
+    src = 'test.mp4'
+    realtime_predictor(source=src, id = bedid)
+
+
+main()

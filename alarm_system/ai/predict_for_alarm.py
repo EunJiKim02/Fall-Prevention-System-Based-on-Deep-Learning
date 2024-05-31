@@ -6,19 +6,17 @@ import pandas as pd
 import copy
 
 from PIL import Image
-from pycaret.classification import *  # type: ignore
-
 from ai.lib.lang_sam.lang_sam import LangSAM
 from ai.lib.openpose.src import util
 from ai.lib.openpose.src.body import Body
-
+from pycaret.classification import *  # type: ignore
 
 import warnings
 
 warnings.filterwarnings("ignore")
 
 """
-용도: 침대 영역 detection, 키포인트 좌표값 pose estimation, 정상 행동과 낙상 위험 행동 분류 모델 test
+용도: 침대 영역 detection, 키포인트 좌표값 pose estimation, 정상 행동과 낙상 위험 행동 분류 모델 train
 
 """
 
@@ -49,16 +47,14 @@ def crop_image(image, boxes):
         return crop_image
 
 
-def bed_detection(model, img_path=None, img=None):
-    text_prompt = "bed"
+def bed_detection(model, img_path = None, img = None):
 
+    cropped_img = None
+    text_prompt = "bed"
     if img_path is not None:
         image_pil = Image.open(img_path).convert("RGB")
-    elif img is not None:
+    if img is not None:
         image_pil = Image.fromarray(img).convert("RGB")
-    else:
-        raise ValueError("Either img_path or img must be provided")
-
     masks, boxes, phrases, logits = model.predict(image_pil, text_prompt)
 
     if len(masks) == 0:
@@ -66,6 +62,8 @@ def bed_detection(model, img_path=None, img=None):
         return None
     else:
         cropped_img = crop_image(image_pil, boxes)
+        cropped_img.save("./output/bed/check.jpg")
+
         # Convert PIL image to OpenCV image
         open_cv_image = np.array(cropped_img)
         open_cv_image = open_cv_image[:, :, ::-1].copy()
@@ -125,7 +123,7 @@ def data_refine(df):
 
 
 def pose_estimation(cropped_img):
-    body_estimation = Body("ai/lib/openpose/model/body_pose_model.pth")
+    body_estimation = Body("pose_classification/lib/openpose/model/body_pose_model.pth")
     header = [
         "Img",
         "NoseX",
@@ -179,13 +177,11 @@ def pose_estimation(cropped_img):
     df_rows = get_df_row(height, width, allkeypoints)
 
     for row in df_rows:
-        row = ["real-time_img"] + list(row)
+        row = ['real-time_img'] + list(row)
         row.append(-1)
         rows_list.append(row)
 
-    keypoints_df = pd.concat(
-        [keypoints_df, pd.DataFrame(rows_list, columns=header)], ignore_index=True
-    )
+    keypoints_df = pd.concat([keypoints_df, pd.DataFrame(rows_list, columns=header)], ignore_index=True)
     result_df = data_refine(keypoints_df)
     return result_df
 
@@ -197,24 +193,46 @@ def fall_detect(pred_df, final_model):
     return pred
 
 
-# Main class for real-time fall prediction
 class realtime_fall_predictor:
-    def __init__(self, model_name="best_model"):
+    def __init__(self, model_name = 'best_model'):
         self.lsam = LangSAM("vit_h")
-        self.model_path = f"ai/checkpoint/{model_name}"
+        self.model_path = f"pose_classification/checkpoint/{model_name}"
         self.model = load_model(self.model_path)
-
-    def realtime_predict(self, image, crop=False):
-        if crop:
-            cropped_img = bed_detection(self.lsam, img=image)
-            if cropped_img is None:
-                return False
-            df = pose_estimation(cropped_img)
-        else:
-            df = pose_estimation(image)
+        
+    def realtime_predict(self, image):
+        cropped_img = bed_detection(self.lsam, img=image)
+        #print("bed detection")
+        if cropped_img is None:
+            return False
+        df = pose_estimation(image)
+        #print("pose estimation")
         if df.empty:
             return False
         pred = fall_detect(df, self.model)
+        #print("fall_detect")
         if pred == 1:
             return True
         return False
+
+
+def main():
+    lsam = LangSAM("vit_h")
+    test_dir = f"data/test/"
+    img_pathes = [test_dir + img for img in os.listdir(test_dir)]
+    model_name = ""
+    model_name = model_name.split(".")[0]
+    model_path = f"checkpoint/{model_name}"
+    model = load_model(model_path)
+
+    for test_img in img_pathes:
+        cropped_img = bed_detection(lsam, img_path=test_img)
+        df = pose_estimation(cropped_img)
+        print(df)
+        pred = fall_detect(df, model)
+        if pred == 1:
+            # send_alarm()
+            pass
+
+
+if __name__ == "__main__":
+    main()
