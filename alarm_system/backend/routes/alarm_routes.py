@@ -1,5 +1,5 @@
 from flask import render_template, request, redirect, url_for, Blueprint, session, jsonify
-from alarm_system.backend.database.db import Mysqldb
+from backend.database.db import Mysqldb
 
 from flask_socketio import SocketIO, emit
 import time

@@ -6,9 +6,9 @@ import pandas as pd
 import copy
 
 from PIL import Image
-from pose_classification.lib.lang_sam.lang_sam import LangSAM
-from pose_classification.lib.openpose.src import util
-from pose_classification.lib.openpose.src.body import Body
+from ai.lib.lang_sam.lang_sam import LangSAM
+from ai.lib.openpose.src import util
+from ai.lib.openpose.src.body import Body
 from pycaret.classification import *  # type: ignore
 
 import warnings

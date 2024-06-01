@@ -1,7 +1,7 @@
-from alarm_system.backend.app import create_app
+from backend.app import create_app
 from config import SECRET_KEY
 import threading
-from alarm_system.backend.routes.alarm_routes import monitor_patients
+from backend.routes.alarm_routes import monitor_patients
 
 app, socketio = create_app()
 app.secret_key = SECRET_KEY
