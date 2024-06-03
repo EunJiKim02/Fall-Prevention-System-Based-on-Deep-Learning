@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import img from '../assets/patient_img.png';
 import Header from "./Header";
-import Warning from "./Warning";
 import { io } from "socket.io-client";
 
 axios.defaults.withCredentials = true;
@@ -11,6 +10,7 @@ export default function Patients() {
   const [isWarning, setIsWarning] = useState(false);
   const [warningInfo, setWarningInfo] = useState({warningText: "경고", detail: "환자가 위험합니다."});
   const [patients, setPatients] = useState([]);
+
 
   const fetchAPI = async () => {
     try {
@@ -40,6 +40,10 @@ export default function Patients() {
     };
   }, []);
 
+  const handleClose = () => {
+    setIsWarning(false);
+  };
+
   const renderPatients = patients.length > 0 && patients.map((p) => {
     return (
       <section className='patient' key={p[0]}>
@@ -53,16 +57,22 @@ export default function Patients() {
   });
 
   return (
-    <>
-      <Header />
+  <>
+  <Header />
       <main>
         <h1>환자 정보</h1>
         <div className="patients">
           {renderPatients}
         </div>
-        <button onClick={() => setIsWarning(!isWarning)}>경고 보기</button>
       </main>
-      {isWarning && <Warning warningInfo={warningInfo} />}
-    </>
+  
+    { isWarning ? (
+      <section className="warning">
+        <button className="warning-btn" onClick={handleClose}>✖️</button>
+        <h1 style={{ color: 'red', fontSize: '100px' }}>⚠️{warningInfo.warningText}</h1>
+        <h1>{warningInfo.detail}</h1>
+      </section>
+    ) : null }
+  </>
   );
 }
