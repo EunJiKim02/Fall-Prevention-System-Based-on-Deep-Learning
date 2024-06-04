@@ -62,7 +62,6 @@ def bed_detection(model, img_path = None, img = None):
         return None
     else:
         cropped_img = crop_image(image_pil, boxes)
-        cropped_img.save("./output/bed/check.jpg")
 
         # Convert PIL image to OpenCV image
         open_cv_image = np.array(cropped_img)
