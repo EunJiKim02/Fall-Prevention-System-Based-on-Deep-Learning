@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import mainLogo from '../assets/main_logo.png';
+import mainLogo from '/assets/main_logo.png';
 
 axios.defaults.withCredentials = true
 
