@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import img from '../assets/patient_img.png';
 import Header from "./Header";
 import { io } from "socket.io-client";
 
@@ -53,14 +52,18 @@ export default function Patients() {
   };
 
   const renderPatients = patients.length > 0 && patients.map((p) => {
+    const imagePath = `/assets/dummyPatientsImg/${p[5]}`;
     return (
       <section className='patient' key={p[0]}>
-        <figure><img src={img} alt="patient" /></figure>
-        <h3>이름 : {p[1]}</h3>
+        <figure><img src={imagePath} alt="patient" width={200} height={200} /></figure>
+        
+        <h3>{p[1]}</h3>
         <p>환자 위치 : {p[2]}</p>
-        <p>특이사항 : {p[3]}</p>
-        <p>담당 간호사 : {p[4]}</p>
+        <p>특이사항 : {p[4]}</p>
+        <p>담당 간호사 : {p[3]}</p>
+
       </section>
+
     );
   });
 
