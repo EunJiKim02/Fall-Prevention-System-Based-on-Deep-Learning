@@ -4,7 +4,7 @@
 
 ## 관리자 서버
 
-1. react 
+1. react 실행
 
 ```
 cd frontend
