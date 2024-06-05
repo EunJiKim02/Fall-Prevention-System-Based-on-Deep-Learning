@@ -10,7 +10,7 @@ https://nodejs.org/ko/download/
 fronted폴더(리액트)에 package.json이 있어야 함.
 
 ```
-# package.json으로 패키지 설치
+# package.json으로 리액트 및 관련 패키지 설치
 npm install
 
 # vite 설치
