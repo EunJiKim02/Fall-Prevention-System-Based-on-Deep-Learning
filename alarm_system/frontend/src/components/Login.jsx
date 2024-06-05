@@ -13,7 +13,7 @@ export default function Login() {
     //ex. 서버로 아이디 비밀번호 보내기
 
     let isLoginAuthorzied = false;
-    axios.post('http://localhost:5173/signin_request', { email, password }).then((res) => {
+    axios.post('http://localhost:5000/signin_request', { email, password }).then((res) => {
       console.log("res", res.data.res)
       if(res.data.res){
         navigate('/patients');
