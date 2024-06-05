@@ -1,7 +1,7 @@
 
 # Pose Classification
 
-
+## How to use
 
 - get pretrained openpose model
   ``` bash
