@@ -19,7 +19,9 @@
   conda activate fall
   pip install requirements.txt
   ```
-- alarm_system/readme.md
+- alarm_system/frontend/README.md
+- alarm_system/backend/README.md
+- alarm_system/README.md
 
 
 
