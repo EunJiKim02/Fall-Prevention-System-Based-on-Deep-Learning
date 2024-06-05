@@ -14,12 +14,12 @@
 
 - conda environment
 
-  ``` bash
+  ``` 
   conda env create -f environment.yaml
   conda activate fall
   pip install requirements.txt
   ```
-
+- alarm_system/readme.md
 
 
 
