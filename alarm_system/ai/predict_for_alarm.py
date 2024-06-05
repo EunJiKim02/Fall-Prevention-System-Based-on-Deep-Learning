@@ -62,7 +62,6 @@ def bed_detection(model, img_path = None, img = None):
         return None
     else:
         cropped_img = crop_image(image_pil, boxes)
-        cropped_img.save("./output/bed/check.jpg")
 
         # Convert PIL image to OpenCV image
         open_cv_image = np.array(cropped_img)
@@ -213,26 +212,3 @@ class realtime_fall_predictor:
         if pred == 1:
             return True
         return False
-
-
-def main():
-    lsam = LangSAM("vit_h")
-    test_dir = f"data/test/"
-    img_pathes = [test_dir + img for img in os.listdir(test_dir)]
-    model_name = ""
-    model_name = model_name.split(".")[0]
-    model_path = f"checkpoint/{model_name}"
-    model = load_model(model_path)
-
-    for test_img in img_pathes:
-        cropped_img = bed_detection(lsam, img_path=test_img)
-        df = pose_estimation(cropped_img)
-        print(df)
-        pred = fall_detect(df, model)
-        if pred == 1:
-            # send_alarm()
-            pass
-
-
-if __name__ == "__main__":
-    main()

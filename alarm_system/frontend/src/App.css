@@ -32,20 +32,23 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-evenly;
+  padding: 0 5rem;
+  
   .patient{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #e3edf8;
-    box-shadow: 1px 1px 10px #bdbfc0;
+    background-color: #d9eaf9;
+    /* box-shadow: 1px 1px 10px #e4e3e3; */
+    box-shadow: 1px 1px 10px #00000030;
     padding-block: 1em;
     padding-inline: 3em;
     margin-inline: 1em;
-    margin-block: 1em;
-    border-radius: 25px;
-    width:20em;
-    height: 22em;
+    margin-block: 2em;
+    border-radius: 13px;
+    width: 20em;
+    height: 27em;
     /* box-shadow: 0 1px 10px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     transition: all 0.3s cubic-bezier(.25,.8,.25,1); */
   }
