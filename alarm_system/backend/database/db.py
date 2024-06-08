@@ -96,7 +96,6 @@ class Patient:
             q = f"UPDATE PATIENT SET current_status = {desired} WHERE id = {self.id}"
             self.db.cursor.execute(q)
             self.db.conn.commit()
-            print("update database")
             return True
         return False
 
