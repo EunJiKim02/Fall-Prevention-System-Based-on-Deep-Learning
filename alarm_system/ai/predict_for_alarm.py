@@ -190,7 +190,6 @@ def pose_estimation(cropped_img, body_estimation):
 def fall_detect(pred_df, final_model):
     pred_list = predict_model(final_model, pred_df)["prediction_label"].to_list()
     pred = pred_list[0]
-
     return pred
 
 

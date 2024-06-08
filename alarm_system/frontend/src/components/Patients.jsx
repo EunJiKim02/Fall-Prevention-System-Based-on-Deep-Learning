@@ -53,14 +53,15 @@ export default function Patients() {
 
   const renderPatients = patients.length > 0 && patients.map((p) => {
     const imagePath = `/assets/dummyPatientsImg/${p[5]}`;
+    const cardClassName = `patient patient-border-${p[6]}`;
     return (
-      <section className='patient' key={p[0]}>
+      <section className={cardClassName} key={p[0]}>
         <figure><img src={imagePath} alt="patient" width={200} height={200} /></figure>
         
         <h3>{p[1]}</h3>
-        <p>환자 위치 : {p[2]}</p>
-        <p>특이사항 : {p[4]}</p>
-        <p>담당 간호사 : {p[3]}</p>
+        <h6>환자 위치 : {p[2]}</h6>
+        <h6>담당 간호사 : {p[3]}</h6>
+        <p className="patient-contents">특이사항 : {p[4]}</p>
 
       </section>
 
@@ -70,8 +71,13 @@ export default function Patients() {
   return (
   <>
   <Header />
+      <link rel="preconnect" href="https://fonts.googleapis.com"></link>
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin></link>
+      <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet"></link>
       <main>
-        <h1>환자 정보</h1>
+        <br></br>
+        <h1 className="info">환자 정보</h1>
+        <br></br><br></br>
         <div className="patients">
           {renderPatients}
         </div>
