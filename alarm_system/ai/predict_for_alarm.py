@@ -120,9 +120,12 @@ def data_refine(df):
 
     return df_result
 
+def pose_estimation_model_load(path):
+    body_estimation = Body(path)
+    return body_estimation
 
-def pose_estimation(cropped_img):
-    body_estimation = Body("pose_classification/lib/openpose/model/body_pose_model.pth")
+def pose_estimation(cropped_img, body_estimation):
+
     header = [
         "Img",
         "NoseX",
@@ -166,7 +169,6 @@ def pose_estimation(cropped_img):
 
     keypoints_df = pd.DataFrame(columns=header)
     rows_list = []
-
     candidate, subset = body_estimation(cropped_img)
     canvas = copy.deepcopy(cropped_img)
     canvas, allkeypoints = util.keypoints_extractor(canvas, candidate, subset)
@@ -193,9 +195,15 @@ def fall_detect(pred_df, final_model):
 
 
 class realtime_fall_predictor:
-    def __init__(self, model_name = 'best_model'):
+    def __init__(self, model_name = 'best_model', pose_model_path = "ai/lib/openpose/model/body_pose_model.pth"):
+        print("load langsam")
         self.lsam = LangSAM("vit_h")
-        self.model_path = f"pose_classification/checkpoint/{model_name}"
+        print('load openpose')
+        self.pose_model_path = pose_model_path
+        self.pose_estimation = pose_estimation_model_load(self.pose_model_path)
+        pose_estimation(bed_detection(self.lsam, img_path="ai/lib/openpose/sample.png"), self.pose_estimation)
+        print('load fall detection')
+        self.model_path = f"ai/checkpoint/{model_name}"
         self.model = load_model(self.model_path)
         
     def realtime_predict(self, image):
@@ -203,12 +211,12 @@ class realtime_fall_predictor:
         #print("bed detection")
         if cropped_img is None:
             return False
-        df = pose_estimation(image)
+        df = pose_estimation(image, self.pose_estimation)
         #print("pose estimation")
         if df.empty:
             return False
         pred = fall_detect(df, self.model)
-        #print("fall_detect")
+        print("detecting...")
         if pred == 1:
             return True
         return False
