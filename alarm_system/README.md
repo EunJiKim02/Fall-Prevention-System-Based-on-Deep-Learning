@@ -6,26 +6,21 @@
 
 1. react 실행
 
-Fall-Prevention-System-Based-on-Deep-Learning/alarm_system/frontend/ 에서 아래 명령 실행
-
 ```
+cd frontend
 npm run dev
 ```
 
 2. flask 실행
 
-Fall-Prevention-System-Based-on-Deep-Learning/ 에서 아래 명령 실행
-
 ```
-python alarm_system/server.py
+python server.py
 ```
 
 
 ## 카메라 서버
 1. 카메라 서버 실행
-
-Fall-Prevention-System-Based-on-Deep-Learning/ 에서 아래 명령 실행
-
+   
 ```
-python alarm_system/realtime_fall_predictor.py
+python realtime_fall_predictor.py
 ```

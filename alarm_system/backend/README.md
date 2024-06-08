@@ -3,9 +3,14 @@
 <br>
 
 ## requirements
-```bash
+```
+# flask 설치
 pip install flask
+
+# pymysql 설치
 pip install pymysql
+
+# mysql-server 설치
 sudo apt install mysql-server
 ```
 

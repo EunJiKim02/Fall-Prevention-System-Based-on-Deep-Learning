@@ -10,20 +10,18 @@
 ![image](https://github.com/EunJiKim02/Fall-Prevention-System-Based-on-Deep-Learning/assets/100736860/09b5eef4-e92e-42f8-a92d-6046cab02f93)
 
 
-### dataset
-
-https://drive.google.com/drive/folders/1NCKVH2z7ljYXVJDb2eQDjhm2fmP9RDzY?usp=share_link
-
-
 ### environment setting
 
 - conda environment
 
-  ``` bash
-  conda env create -f environment.yaml
+  ``` 
+  conda conda create -n fall 
   conda activate fall
+  pip install requirements.txt
   ```
-
+- alarm_system/frontend/README.md
+- alarm_system/backend/README.md
+- alarm_system/README.md
 
 
 
