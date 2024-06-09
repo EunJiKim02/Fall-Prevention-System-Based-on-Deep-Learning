@@ -1,6 +1,7 @@
 from flask import render_template, request, redirect, url_for, Blueprint, session, jsonify
 from backend.database.db import Mysqldb
-
+from werkzeug.utils import secure_filename
+import os
 
 main_bp = Blueprint('main', __name__)
 
@@ -37,6 +38,46 @@ def signup_request():
             return redirect(url_for("main.signup"))
     else:
         return "invalid access"
+    
+
+
+
+
+@main_bp.route('/add_patients', methods=['POST'])
+def add_patients():
+
+    def allowed_file(filename):
+        ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+        return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+    if request.method == 'POST':
+        name = request.form.get('name')
+        room = request.form.get('loc')
+        nurse = request.form.get('nurse')
+        significant = request.form.get('significant')
+        risk = request.form.get('risk')
+
+        if 'file' in request.files:
+            file = request.files['file']
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                print(os.getcwd())
+                file.save(os.path.join("./frontend/public/assets/PatientsImg", filename))
+                img = filename
+            else:
+                img = None
+        else:
+            img = None
+
+        info = [name, room, nurse, significant, img ,risk]
+
+        if mysql.insert_patients(info):
+            return jsonify({"res": True})
+        else:
+            return jsonify({"res": False})
+    else:
+        return jsonify({"res": False})
+
     
 
 @main_bp.route('/patients')

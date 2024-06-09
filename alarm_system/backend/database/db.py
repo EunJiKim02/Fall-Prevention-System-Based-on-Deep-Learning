@@ -27,35 +27,41 @@ class Mysqldb:
     # --------------------------------------
 
 
-    # --------- manager 관련 함수 -----------
+    # --------- patients 관련 함수 -----------
 
-    # manager signup ( = insert s)
-    # info = ('email', 'password', 'name')
-    def signup(self, info): 
-        def isiddup(email): # duplicate check
-            query = f"SELECT COUNT(*) FROM MANAGER WHERE email ='{email}'"
+    # add patients signup ( = insert s)
+    # info = INSERT INTO PATIENT VALUES(0,'Grace','301-1', 'eunji', 'Fall risk assessment', 'patients_001.png', 2,false);
+    def insert_patients(self, info): 
+        try:
+            self.conn.begin() 
+            print(info)
+            query = f"INSERT INTO PATIENT VALUES( 0, '{info[0]}','{info[1]}', '{info[2]}', '{info[3]}', '{info[4]}', {info[5]}, false)"
             self.cursor.execute(query)
-            result = self.cursor.fetchone()
-            return result[0] == 0
-    
-        def insert(info): #signup
-            try:
-                self.conn.begin() 
-                query = f"INSERT INTO MANAGER VALUES( 0, '{info[0]}','{info[1]}', '{info[2]}')"
-                self.cursor.execute(query)
-                self.conn.commit() 
-                return True
-            except Exception as e: #transaction rollback
-                self.conn.rollback()
-                print(f"Error during insert: {e}")
-                return False
+            self.conn.commit() 
+            return True
+        except Exception as e: #transaction rollback
+            self.conn.rollback()
+            print(f"Error during insert: {e}")
+            return False
             
-        if isiddup(info[0]):
-            return insert(info)
-        else:
-            print('duplicate id')    
-        return False
 
+    
+    def delete_patients(self, info): 
+        try:
+            self.conn.begin() 
+            print(info)
+            query = f"INSERT INTO PATIENT VALUES( 0, '{info[0]}','{info[1]}', '{info[2]}', '{info[3]}', '{info[4]}', {info[5]}, false)"
+            self.cursor.execute(query)
+            self.conn.commit() 
+            return True
+        except Exception as e: #transaction rollback
+            self.conn.rollback()
+            print(f"Error during insert: {e}")
+            return False
+
+
+
+    # --------- managers 관련 함수 -----------
 
     # manager get info
     def get_manager_info(self, email):
