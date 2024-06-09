@@ -1,6 +1,7 @@
 import pymysql
 from config import db_config
 
+
 # database object
 class Mysqldb:
     def __init__(self):
@@ -22,7 +23,7 @@ class Mysqldb:
     def selectall(self, query): # 모든 정보 선택
         self.cursor.execute(query)
         return self.cursor.fetchall()
-    
+
     # --------------------------------------
 
 
@@ -71,3 +72,31 @@ class Mysqldb:
         return result[0] > 0
 
     
+
+class Patient:
+    def __init__(self):
+        self.id = None
+        self.db = Mysqldb()
+
+    def setinfo(self, id = None):
+        self.id = id
+    
+    def getuserinfo(self):
+        query = f"select * from PATIENT where id={self.id}"
+        res = self.db.selectall(query)
+        if len(res) == 1:
+            return res
+        else:
+            print("dup name patient")
+            return False
+
+    def changestatus(self, desired):
+        status = self.db.select1(f'select current_status from PATIENT where id={self.id}')
+        if status != desired:
+            q = f"UPDATE PATIENT SET current_status = {desired} WHERE id = {self.id}"
+            self.db.cursor.execute(q)
+            self.db.conn.commit()
+            return True
+        return False
+
+        

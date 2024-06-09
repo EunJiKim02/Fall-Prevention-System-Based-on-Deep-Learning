@@ -7,53 +7,21 @@
 딥러닝 기반의 낙상사고 방지 시스템
 
 
-
 ![image](https://github.com/EunJiKim02/Fall-Prevention-System-Based-on-Deep-Learning/assets/100736860/09b5eef4-e92e-42f8-a92d-6046cab02f93)
-
-
-### dataset
-
-https://drive.google.com/drive/folders/1NCKVH2z7ljYXVJDb2eQDjhm2fmP9RDzY?usp=share_link
 
 
 ### environment setting
 
 - conda environment
 
-  ``` bash
-  conda env create -f environment.yaml
+  ``` 
+  conda create -n fall 
   conda activate fall
+  pip install requirements.txt
   ```
-
-- get pretrained openpose model
-  ``` bash
-  mkdir ./openpose/model
-
-  gdown https://drive.google.com/uc?id=1EULkcH_hhSU28qVc1jSJpCh2hGOrzpjK -O ./openpose/model/body_pose_model.pth
-  ```
-
-- detection
-
-  ``` bash
-  python bed_seg_detection.py
-  ```
-
-- pose estimation
-
-  ``` bash
-  python pose_estimation.py
-  ```
-
-- classification
-  train
-  ``` bash
-  python fall_detect_train.py
-  ```
-  test
-  ``` bash
-  python fall_detect_train.py
-  ```
-
+- alarm_system/frontend/README.md
+- alarm_system/backend/README.md
+- alarm_system/README.md
 
 
 

@@ -18,8 +18,8 @@
 }
 
 a {
-  font-weight: 500;
-  color: #757677;
+  font-weight: 600;
+  color: #000000;
   text-decoration: inherit;
 }
 
@@ -29,7 +29,7 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  background-color: #f0f3fa;
+  background-color: #f8f8f8;
 }
 
 h1 {
@@ -84,13 +84,14 @@ input{
 }
 
 header{
-  background-color: #f0f3fa;
+  background-color: #D5DFA1;
   position:fixed;
-  border-bottom:1px solid rgb(133, 133, 134);
+  /* border-bottom:1px solid rgb(133, 133, 134); */
   
   top:0;
   right:0;
   left:0;
+  z-index: 1000; 
   ul{
     display:flex;
     justify-content:right;
@@ -103,6 +104,7 @@ header{
       margin-inline: 10px;
     }
   }
+
   nav{
     display: flex;
     justify-content: space-between;
@@ -112,6 +114,7 @@ header{
     width: 3em;
     left: 0;
   }
+  
 }
 
 footer {
