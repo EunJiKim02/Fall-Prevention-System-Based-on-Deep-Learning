@@ -1,11 +1,10 @@
 from backend.app import create_app
-from config import SECRET_KEY, UPLOAD_FOLDER
+from config import SECRET_KEY
 import threading
 from backend.routes.alarm_routes import monitor_patients
 
 app, socketio = create_app()
 app.secret_key = SECRET_KEY
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 if __name__ == '__main__':
