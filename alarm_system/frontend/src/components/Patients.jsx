@@ -52,7 +52,7 @@ export default function Patients() {
   };
 
   const renderPatients = patients.length > 0 && patients.map((p) => {
-    const imagePath = `/assets/dummyPatientsImg/${p[5]}`;
+    const imagePath = `/assets/PatientsImg/${p[5]}`;
     const cardClassName = `patient patient-border-${p[6]}`;
     return (
       <section className={cardClassName} key={p[0]}>
