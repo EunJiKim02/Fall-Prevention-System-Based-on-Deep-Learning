@@ -15,7 +15,7 @@
 - conda environment
 
   ``` 
-  conda conda create -n fall 
+  conda create -n fall 
   conda activate fall
   pip install requirements.txt
   ```
