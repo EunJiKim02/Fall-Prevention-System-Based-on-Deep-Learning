@@ -78,7 +78,6 @@ def add_patients():
     else:
         return jsonify({"res": False})
 
-    
 
 @main_bp.route('/patients')
 def patients():
@@ -86,6 +85,33 @@ def patients():
     info = mysql.selectall("select * from PATIENT")
     print(info)
     return jsonify({"patients": info})
+
+
+@main_bp.route('/patient/<int:id>', methods=['GET'])
+def get_patient(id):
+    patient = mysql.get_patient_info(id)
+    if patient:
+        return jsonify({"patient": {
+            "name": patient[1],
+            "loc": patient[2],
+            "nurse": patient[3],
+            "significant": patient[4],
+            "img": patient[5],
+            "risk": patient[6]
+        }})
+    else:
+        return jsonify({"error": "Patient not found"}), 404
+
+
+@main_bp.route('/patient_delete', methods=['POST'])
+def patient_delete():
+    if request.method == 'POST':
+        id = request.json.get('id')
+    # 환자 데이터를 불러와서 json 파일로 전송
+    info = mysql.delete_patients(id)
+    return jsonify({"res": info})
+
+
 
 @main_bp.route('/login')
 def login():

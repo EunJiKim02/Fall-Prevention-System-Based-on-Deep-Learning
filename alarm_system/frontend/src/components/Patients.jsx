@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Header from "./Header";
 import { io } from "socket.io-client";
+import { useNavigate } from "react-router-dom";
 
 axios.defaults.withCredentials = true;
 
@@ -11,6 +12,7 @@ export default function Patients() {
   const [patients, setPatients] = useState([]);
   const [warningPatient, setwarningPatient] = useState(0);
   const [socket, setSocket] = useState(io("http://localhost:5000"));
+  const navigate = useNavigate();
 
   const fetchAPI = async () => {
     try {
@@ -51,22 +53,29 @@ export default function Patients() {
     }
   };
 
+
+  const handlePatientClick = (id) => {
+    console.log(id)
+    navigate(`/patient/${id}`);
+  };
+
   const renderPatients = patients.length > 0 && patients.map((p) => {
     const imagePath = `/assets/PatientsImg/${p[5]}`;
     const cardClassName = `patient patient-border-${p[6]}`;
     return (
-      <section className={cardClassName} key={p[0]}>
+      <section className={cardClassName} key={p[0]} onClick={() => handlePatientClick(p[0])}>
         <figure><img src={imagePath} alt="patient" width={200} height={200} /></figure>
         
         <h3>{p[1]}</h3>
-        <h6>환자 위치 : {p[2]}</h6>
-        <h6>담당 간호사 : {p[3]}</h6>
+        <h5>환자 위치 : {p[2]}</h5>
         <p className="patient-contents">특이사항 : {p[4]}</p>
 
       </section>
 
     );
   });
+
+
 
   return (
   <>

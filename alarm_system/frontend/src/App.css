@@ -80,7 +80,6 @@
 }
 
 
-
 .patient-border-0 {
   border: 5px solid #d8d7d7; /* Default color */
 }
@@ -92,6 +91,60 @@
 .patient-border-2 {
   border: 5px solid hsl(17, 100%, 50%); /* Example color for value 2 */
 }
+
+.details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+  margin: 2rem auto;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: "Gowun Dodum", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  background-color: #f9f9f9;
+}
+
+.detail-contents {
+  font-size: 15px;
+  text-align: center;
+}
+
+.detail-border-0 {
+  border: 5px solid #d8d7d7; /* Default color */
+}
+
+.detail-border-1 {
+  border: 5px solid #ffc402; /* Example color for value 1 */
+}
+
+.detail-border-2 {
+  border: 5px solid hsl(17, 100%, 50%); /* Example color for value 2 */
+}
+
+.details img {
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.details button {
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #ff4d4d;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.details button:hover {
+  background-color: #ff1a1a;
+}
+
+
 
 
 .padd-card{

@@ -4,6 +4,7 @@ import Login from './components/Login'
 import Footer from './components/Footer'
 import Patients from './components/Patients'
 import Paddition from './components/Paddition'
+import PatientDetail from "./components/PatientDetail";
 import axios from 'axios'
 import { useEffect } from 'react'
 
@@ -26,6 +27,7 @@ function App() {
         <Route path='/' element={<Login />} />
         <Route path='/patients' element={<Patients />} />
         <Route path='/paddition' element={<Paddition />} />
+        <Route path="/patient/:id" element={<PatientDetail />} />
       </Routes>
       <Footer/>
     </>
