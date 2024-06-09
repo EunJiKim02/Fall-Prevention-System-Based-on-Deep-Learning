@@ -13,7 +13,6 @@ export default function Login() {
     //ex. 서버로 아이디 비밀번호 보내기
 
     let isLoginAuthorzied = false;
-    console.log(email, password)
     axios.post('http://localhost:5000/signin_request', { email, password }).then((res) => {
       console.log("res", res.data.res)
       if(res.data.res){
@@ -27,7 +26,7 @@ export default function Login() {
   return (
   <>
     {/* <h1 className="appname">낙상방지 환자 모니터링 서비스</h1> */}
-    <main className="card">
+    <main className="padd-card">
       <img className='mainlogo'src={mainLogo} ></img>
       <h3>낙상 예방 환자 모니터링</h3>
       <div><input value={email} onChange={(e)=>setId(e.target.value)} placeholder="아이디를 입력하세요."></input></div>

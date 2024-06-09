@@ -44,13 +44,16 @@ class Mysqldb:
             print(f"Error during insert: {e}")
             return False
             
-
+    def get_patient_info(self, id):
+        query = f"SELECT * FROM PATIENT WHERE id = '{id}'"
+        self.cursor.execute(query)
+        result = self.cursor.fetchone()
+        return result
     
-    def delete_patients(self, info): 
+    def delete_patients(self, id): 
         try:
             self.conn.begin() 
-            print(info)
-            query = f"INSERT INTO PATIENT VALUES( 0, '{info[0]}','{info[1]}', '{info[2]}', '{info[3]}', '{info[4]}', {info[5]}, false)"
+            query = f"DELETE FROM PATIENT WHERE id ={id}"
             self.cursor.execute(query)
             self.conn.commit() 
             return True
