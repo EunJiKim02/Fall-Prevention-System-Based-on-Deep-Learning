@@ -12,6 +12,7 @@
 
 ### environment setting
 - cuda : 12.0
+- torch : 2.3.0+cu121 (pip install torch==2.3.0 torchvision==0.18.0 torchaudio==2.3.0 --index-url https://download.pytorch.org/whl/cu121)
 - conda environment
 
   ``` 
