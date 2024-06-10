@@ -7,6 +7,7 @@ import shutil
 
 코드실행 결과 : ./source/high/folder의 이미지를 이용하여 ./train/src/high/folder 폴더와 
     ./test/high/folder 폴더에 분류
+    
 """
 
 # data split
