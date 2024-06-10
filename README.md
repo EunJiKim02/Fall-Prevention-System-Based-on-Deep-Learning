@@ -11,7 +11,7 @@
 
 
 ### environment setting
-
+- cuda : 12.0
 - conda environment
 
   ``` 
