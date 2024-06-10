@@ -6,8 +6,8 @@
 ### Project 소개
 딥러닝 기반의 낙상사고 방지 시스템
 
+![그림2](https://github.com/EunJiKim02/Fall-Prevention-System-Based-on-Deep-Learning/assets/87495422/51a4376e-6a2a-4db5-bf9c-84817a38a7bc)
 
-![image](https://github.com/EunJiKim02/Fall-Prevention-System-Based-on-Deep-Learning/assets/100736860/09b5eef4-e92e-42f8-a92d-6046cab02f93)
 
 
 ### environment setting
