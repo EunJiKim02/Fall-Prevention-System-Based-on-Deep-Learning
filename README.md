@@ -11,18 +11,16 @@
 
 
 ### environment setting
+- conda environment
+  ``` 
+  conda create -n [name]
+  conda activate [name]
+  ```
 - cuda : 12.0
 - torch : 2.3.0+cu121
   ``` 
   pip install torch==2.3.0 torchvision==0.18.0 torchaudio==2.3.0 --index-url https://download.pytorch.org/whl/cu121)
   ``` 
-- conda environment
-
-  ``` 
-  conda create -n fall 
-  conda activate fall
-  pip install requirements.txt
-  ```
 - alarm_system/frontend/README.md
 - alarm_system/backend/README.md
 - alarm_system/README.md
