@@ -1,6 +1,12 @@
 import cv2
 import os
 
+"""
+용도 : 영상을 이미지로 변경
+
+코드실행 결과 : 영상을 각 프레임에 해당하는 이미지로 저장
+"""
+
 def save_frames(video_path, output_folder, frame_interval=5):
     cap = cv2.VideoCapture(video_path)
     

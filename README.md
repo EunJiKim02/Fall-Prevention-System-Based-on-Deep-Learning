@@ -6,24 +6,34 @@
 ### Project 소개
 딥러닝 기반의 낙상사고 방지 시스템
 
+![그림2](https://github.com/EunJiKim02/Fall-Prevention-System-Based-on-Deep-Learning/assets/87495422/51a4376e-6a2a-4db5-bf9c-84817a38a7bc)
 
-![image](https://github.com/EunJiKim02/Fall-Prevention-System-Based-on-Deep-Learning/assets/100736860/09b5eef4-e92e-42f8-a92d-6046cab02f93)
 
 
 ### environment setting
-
 - conda environment
-
   ``` 
-  conda create -n fall 
-  conda activate fall
-  pip install requirements.txt
+  conda create -n [name]
+  conda activate [name]
   ```
+- cuda : 12.0
+- torch : 2.3.0+cu121
+  ``` 
+  pip install torch==2.3.0 torchvision==0.18.0 torchaudio==2.3.0 --index-url https://download.pytorch.org/whl/cu121)
+  ``` 
 - alarm_system/frontend/README.md
 - alarm_system/backend/README.md
 - alarm_system/README.md
 
 
+### Demo Video
+<a href = "https://www.youtube.com/watch?v=8QFJcwXm1-k">
+  
+  ![image](https://github.com/EunJiKim02/Fall-Prevention-System-Based-on-Deep-Learning/assets/87495422/839c98a3-3563-418f-ac0a-fc2db8872100)
+
+</a>
+
+https://www.youtube.com/watch?v=8QFJcwXm1-k
 
 ### Member
 
