@@ -17,6 +17,7 @@ CREATE TABLE PATIENT(
     nurse VARCHAR(256),
     significant VARCHAR(512),
     pic_url VARCHAR(256),
+    degree_fall INT NOT NULL,
     current_status BOOLEAN,
     PRIMARY key (id)
 ) CHARSET=UTF8;

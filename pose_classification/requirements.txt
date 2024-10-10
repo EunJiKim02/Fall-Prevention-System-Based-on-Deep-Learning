@@ -1,0 +1,16 @@
+matplotlib==3.7.5
+pandas==1.5.3
+Pillow==9.3.0
+numpy==1.26.3
+segment-anything==1.0
+semantic-version==2.10.0
+torch==2.3.0+cu121
+torchaudio==2.3.0+cu121
+torchmetrics==1.3.2
+torchvision==0.18.0+cu121
+tqdm==4.66.2
+transformers==4.35.2
+seaborn==0.12.2
+scikit-image==0.22.0
+scikit-learn==1.4.2
+pycaret==3.3.1

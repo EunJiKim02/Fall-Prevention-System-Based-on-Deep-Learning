@@ -5,8 +5,7 @@ import os
 """
 용도 : 파일 이름 변경
 
-코드실행 결과 : ./source/high/folder의 이미지를 이용하여
-high_i의 형태를 가진 이름으로 변경
+코드실행 결과 : ./source/high/folder의 이미지를 이용하여 high_i의 형태를 가진 이름으로 변경
 
 """
 

@@ -47,7 +47,7 @@ def crop_image(image, boxes):
         return crop_image
 
 
-def bed_detection(model, img_path = None, img = None):
+def bed_detection(model, img_path=None, img=None):
 
     cropped_img = None
     text_prompt = "bed"
@@ -121,8 +121,13 @@ def data_refine(df):
     return df_result
 
 
-def pose_estimation(cropped_img):
-    body_estimation = Body("pose_classification/lib/openpose/model/body_pose_model.pth")
+def pose_estimation_model_load(path):
+    body_estimation = Body(path)
+    return body_estimation
+
+
+def pose_estimation(cropped_img, body_estimation):
+
     header = [
         "Img",
         "NoseX",
@@ -166,7 +171,6 @@ def pose_estimation(cropped_img):
 
     keypoints_df = pd.DataFrame(columns=header)
     rows_list = []
-
     candidate, subset = body_estimation(cropped_img)
     canvas = copy.deepcopy(cropped_img)
     canvas, allkeypoints = util.keypoints_extractor(canvas, candidate, subset)
@@ -176,11 +180,13 @@ def pose_estimation(cropped_img):
     df_rows = get_df_row(height, width, allkeypoints)
 
     for row in df_rows:
-        row = ['real-time_img'] + list(row)
+        row = ["real-time_img"] + list(row)
         row.append(-1)
         rows_list.append(row)
 
-    keypoints_df = pd.concat([keypoints_df, pd.DataFrame(rows_list, columns=header)], ignore_index=True)
+    keypoints_df = pd.concat(
+        [keypoints_df, pd.DataFrame(rows_list, columns=header)], ignore_index=True
+    )
     result_df = data_refine(keypoints_df)
     return result_df
 
@@ -188,27 +194,39 @@ def pose_estimation(cropped_img):
 def fall_detect(pred_df, final_model):
     pred_list = predict_model(final_model, pred_df)["prediction_label"].to_list()
     pred = pred_list[0]
-
     return pred
 
 
 class realtime_fall_predictor:
-    def __init__(self, model_name = 'best_model'):
+    def __init__(
+        self,
+        model_name="best_model",
+        pose_model_path="ai/lib/openpose/model/body_pose_model.pth",
+    ):
+        print("load langsam")
         self.lsam = LangSAM("vit_h")
-        self.model_path = f"pose_classification/checkpoint/{model_name}"
-        self.model = load_model(self.model_path)
-        
+        print("load openpose")
+        self.pose_model_path = pose_model_path
+        self.pose_estimation_model = pose_estimation_model_load(self.pose_model_path)
+        pose_estimation(
+            bed_detection(self.lsam, img_path="ai/lib/openpose/sample.png"),
+            self.pose_estimation_model,
+        )
+        print("load fall detection")
+        self.pose_classifier_path = f"ai/checkpoint/{model_name}"
+        self.pose_classifier = load_model(self.pose_classifier_path)
+
     def realtime_predict(self, image):
         cropped_img = bed_detection(self.lsam, img=image)
-        #print("bed detection")
+        # print("bed detection")
         if cropped_img is None:
             return False
-        df = pose_estimation(image)
-        #print("pose estimation")
+        df = pose_estimation(image, self.pose_estimation_model)
+        # print("pose estimation")
         if df.empty:
             return False
-        pred = fall_detect(df, self.model)
-        #print("fall_detect")
+        pred = fall_detect(df, self.pose_classifier)
+        print("detecting...")
         if pred == 1:
             return True
         return False

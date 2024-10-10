@@ -18,13 +18,15 @@ export default function Login() {
       if(res.data.res){
         navigate('/patients');
       }
+      else
+        alert('로그인 실패 : 이메일, 비밀번호를 확인하세요.')
     });
   }
 
   return (
   <>
     {/* <h1 className="appname">낙상방지 환자 모니터링 서비스</h1> */}
-    <main className="card">
+    <main className="padd-card">
       <img className='mainlogo'src={mainLogo} ></img>
       <h3>낙상 예방 환자 모니터링</h3>
       <div><input value={email} onChange={(e)=>setId(e.target.value)} placeholder="아이디를 입력하세요."></input></div>
